@@ -47,22 +47,11 @@
 
 ## 📋 Table of Contents
 
+- [The Problem & The Solution](#-the-problem--the-solution)
 - [Architecture Overview & Flow](#-architecture-overview--flow)
   - [Layered Architecture Diagram](#layered-architecture-diagram)
   - [End-to-End Candidate Lifecycle & Data Flow](#end-to-end-candidate-lifecycle--data-flow)
 - [System Pipeline](#-system-pipeline)
-- [Module Breakdown](#-module-breakdown)
-  - [Task 1 — Resume Ingestion & Document Processing](#task-1--resume-ingestion--document-processing-backendappservices-backendapputils)
-  - [Task 2 — Job Description Profiling & Parsing](#task-2--job-description-profiling--parsing-backendappservices-backendappmodels)
-  - [Task 3 — Precision Skill Gap Engine](#task-3--precision-skill-gap-engine-backendappservices-backendappmodels)
-  - [Task 4 — Multi-Model AI Router & Gateway](#task-4--multi-model-ai-router--gateway-backendappservices)
-  - [Task 5 — Adaptive Question Synthesis Engine](#task-5--adaptive-question-synthesis-engine-backendappservices-backendappmodels)
-  - [Task 6 — Real-Time Interactive Mock Simulator](#task-6--real-time-interactive-mock-simulator-frontend-backend)
-  - [Task 7 — Multi-Rubric Evaluation & Actionable Feedback](#task-7--multi-rubric-evaluation--actionable-feedback-backendappservices)
-  - [Task 8 — Longitudinal Telemetry & Career Analytics](#task-8--longitudinal-telemetry--career-analytics-backendappservices)
-  - [Task 9 — Core Infrastructure, Security & Persistence](#task-9--core-infrastructure-security--persistence-backendapputils-backendappconfig)
-  - [Task 10 — Enterprise Glassmorphism Frontend](#task-10--enterprise-glassmorphism-frontend-frontendsrc)
-- [Data Models & Schemas](#-data-models--schemas)
 - [Quick Start](#-quick-start)
 - [Testing & System Verification](#-testing--system-verification)
 - [CI/CD & Security](#-cicd--security)
@@ -72,6 +61,25 @@
 - [Security Features](#-security-features)
 - [Why InterviewAce?](#-why-interviewace)
 - [License](#-license)
+
+---
+
+## 💡 The Problem & The Solution
+
+### The Broken Preparation Reality
+- **90% of Technical Candidates Fail** not due to a lack of raw engineering ability, but because they prepare for the wrong things.
+- Candidates spend **100+ hours blindly grinding 400 generic LeetCode problems** and trivial puzzles that hiring managers never actually evaluate.
+- They walk into high-stakes interviews blind to the company's real production challenges: concurrency bottlenecks, caching layers, distributed architecture trade-offs, and structured STAR leadership delivery.
+
+### The InterviewAce Solution
+**InterviewAce** bridges the gap between your real experience and the target job description with an autonomous, precision-aligned preparation copilot:
+
+1. **Intelligent Ingestion** — Deconstructs candidate resumes (PDF/DOCX) alongside target Job Descriptions into structured technical competencies and hiring rubrics.
+2. **Precision Skill Gap Matrix** — Calculates an instant **Role Alignment Score (e.g., 82% Fit)**, highlighting verified strengths (green), adjacent tools (amber), and critical gaps (red) with estimated study hours (e.g., *Docker ~4h, Redis ~2h*)—saving **20+ hours of wasted study**.
+3. **Adaptive 15-Question Engine** — Dynamically synthesizes high-signal architecture, concurrency, coding, and behavioral STAR questions focused on candidate weak spots.
+4. **Live Mock Interview Simulator** — Realistic timed interview session with Web Audio API recording, 48-bar dynamic equalizer waveform visualizer, and streaming speech-to-text.
+5. **Multi-Rubric AI Evaluation** — Grades spoken responses across 4 dimensions (Technical Depth, STAR Delivery, System Architecture, Clarity), yielding a composite **88/100 Readiness Score** with exemplar answers.
+6. **Multi-Model Intelligence** — Zero vendor lock-in across Google Gemini, OpenAI GPT-4o, Anthropic Claude 3.5 Sonnet, and Groq LPU.
 
 ---
 
@@ -169,7 +177,7 @@
 ## 🔄 System Pipeline
 
 1. **Document Ingestion & Sanitization** — `file_handler.py` inspects mime types, validates the 10MB payload threshold, and extracts text streams from PDF and DOCX files in-memory.
-2. **Structured NLP Extraction** — `resume_service.py` extracts verified candidate competencies, education history, quantified achievements, and technologies into typed `ParsedResumeData` schemas.
+2. **Structured NLP Extraction** — `resume_service.py` extracts verified candidate competencies, education history, quantified achievements, and technologies into typed schemas.
 3. **Job Description Profiling** — `jd_service.py` deconstructs enterprise JDs into required vs. preferred skills, seniority levels, core responsibilities, and technical domains.
 4. **Precision Skill Gap Analysis** — `session_service.py` maps candidate skills against JD targets:
    - **Strong Matches (Green)**: Verified competencies that satisfy requirements.
@@ -184,129 +192,6 @@
    - **Communication Clarity & Conciseness** (15%)
 8. **Actionable Remediation & Exemplars** — Generates concrete feedback, key missing discussion points, and ideal candidate answers for rapid revision.
 9. **Longitudinal Telemetry & Analytics** — `analytics_service.py` records session scores, generates competency radar graphs, tracks readiness progression (e.g. 64% → 76% → 88%), and compiles customized study plans.
-
----
-
-## 📦 Module Breakdown
-
-### Task 1 — Resume Ingestion & Document Processing (`backend/app/services/`, `backend/app/utils/`)
-
-| File | Purpose |
-|:---|:---|
-| [`file_handler.py`](backend/app/utils/file_handler.py) | In-memory text extraction from multi-format documents (PDF via PyPDF2, DOCX via python-docx). |
-| [`resume_service.py`](backend/app/services/resume_service.py) | Coordinates structured NLP extraction to populate typed Pydantic candidate models. |
-| [`resume.py`](backend/app/routes/resume.py) | REST controller handling file uploads (`multipart/form-data`), manual adjustments, and profile retrieval. |
-| [`resume.py`](backend/app/models/resume.py) | Schemas for `PersonalInfo`, `Education`, `SkillItem`, `Project`, `Experience`, and `ParsedResumeData`. |
-
-### Task 2 — Job Description Profiling & Parsing (`backend/app/services/`, `backend/app/models/`)
-
-| File | Purpose |
-|:---|:---|
-| [`jd_service.py`](backend/app/services/jd_service.py) | Parses job requirements, categorizes mandatory vs nice-to-have skills, and infers seniority level. |
-| [`jd.py`](backend/app/routes/jd.py) | REST controller for pasting raw job postings, retrieving parsed specs, and browsing past JDs. |
-| [`jd.py`](backend/app/models/jd.py) | Schemas for `SkillRequirement`, `ParsedJDData`, and `JobDescriptionDB`. |
-
-### Task 3 — Precision Skill Gap Engine (`backend/app/services/`, `backend/app/models/`)
-
-| File | Purpose |
-|:---|:---|
-| [`session_service.py`](backend/app/services/session_service.py) | Executes semantic comparison between candidate experience and target JD; computes fit percentage and study hours. |
-| [`session.py`](backend/app/routes/session.py) | Endpoints for initializing preparation sessions and retrieving skill gap matrices. |
-| [`session.py`](backend/app/models/session.py) | Schemas for `StrongMatch`, `PartialMatch`, `GapItem`, `PreparationPriority`, and `SkillGapAnalysis`. |
-
-### Task 4 — Multi-Model AI Router & Gateway (`backend/app/services/`)
-
-| File | Purpose |
-|:---|:---|
-| [`ai_provider_service.py`](backend/app/services/ai_provider_service.py) | Provider adapter dynamically routing prompts across Gemini, OpenAI GPT-4o, Claude 3.5, and Groq LPU with auto-fallback. |
-| [`llm.py`](backend/app/utils/llm.py) | Structured prompting runner enforcing JSON validation, markdown fence cleanup, and deterministic responses. |
-| [`ai.py`](backend/app/routes/ai.py) | Controller for listing active providers, testing connection latencies, and dynamically configuring runtime models. |
-
-### Task 5 — Adaptive Question Synthesis Engine (`backend/app/services/`, `backend/app/models/`)
-
-| File | Purpose |
-|:---|:---|
-| [`practice_service.py`](backend/app/services/practice_service.py) | Synthesizes 15 role-tailored questions focusing on weak spots; grades responses against 4 rubrics. |
-| [`question.py`](backend/app/models/question.py) | Schemas defining question types (Technical, Architecture, Behavioral), difficulty levels, and rubric benchmarks. |
-| [`answer.py`](backend/app/models/answer.py) | Schemas for `AnswerFramework`, `STARFormat`, and `AnswerSuggestion`. |
-
-### Task 6 — Real-Time Interactive Mock Simulator (`frontend/`, `backend/`)
-
-| Component | Purpose |
-|:---|:---|
-| [`PracticeView.jsx`](frontend/src/views/PracticeView.jsx) | Full-screen interactive mock interview room with question audio, answer recording, timer, and streaming transcript. |
-| [`VoiceRecorder.jsx`](frontend/src/components/VoiceRecorder.jsx) | HTML5 Web Audio API component rendering a dynamic 48-bar frequency visualizer and real-time STT streaming. |
-| [`practice.py`](backend/app/routes/practice.py) | Routes managing interview flow: `/practice/{id}/start`, `/next-question`, `/submit-answer`, and `/complete`. |
-| [`Timer.jsx`](frontend/src/components/Timer.jsx) | Interactive countdown timer with visual pacing alerts. |
-
-### Task 7 — Multi-Rubric Evaluation & Actionable Feedback (`backend/app/services/`)
-
-| File | Purpose |
-|:---|:---|
-| [`practice_service.py`](backend/app/services/practice_service.py) | Multi-factor evaluation logic assessing technical correctness, structure, depth, and communication. |
-| [`FeedbackView.jsx`](frontend/src/views/FeedbackView.jsx) | Comprehensive evaluation card displaying four-dimensional rubric gauges, strengths, weaknesses, and exemplar answers. |
-| [`EvaluationModal.jsx`](frontend/src/components/EvaluationModal.jsx) | Modal inspector for deep-diving into individual question scores and feedback. |
-| [`DimensionScoresChart.jsx`](frontend/src/components/DimensionScoresChart.jsx) | Visual bar breakdown comparing candidate scores against target rubric benchmarks. |
-
-### Task 8 — Longitudinal Telemetry & Career Analytics (`backend/app/services/`)
-
-| File | Purpose |
-|:---|:---|
-| [`analytics_service.py`](backend/app/services/analytics_service.py) | Aggregates historical attempt data, computes readiness curves, and tracks category masteries. |
-| [`analytics.py`](backend/app/routes/analytics.py) | Endpoints providing candidate longitudinal metrics and historical radar plots. |
-| [`analytics.py`](backend/app/models/analytics.py) | Schemas for `AnalyticsOverview`, score category breakdowns, and timeline points. |
-| [`AnalyticsView.jsx`](frontend/src/views/AnalyticsView.jsx) | Visual telemetry dashboard displaying progress curves and skill mastery radars. |
-| [`SkillRadarChart.jsx`](frontend/src/components/SkillRadarChart.jsx) | Interactive SVG/Canvas radar chart mapping strengths across technical dimensions. |
-
-### Task 9 — Core Infrastructure, Security & Persistence (`backend/app/utils/`, `backend/app/config/`)
-
-| File | Purpose |
-|:---|:---|
-| [`config.py`](backend/app/config.py) | Typed Pydantic configuration managing MongoDB URIs, JWT secrets, and provider keys. |
-| [`database.py`](backend/app/database.py) | Motor async MongoDB connection pool with automatic reconnect and health checking. |
-| [`security.py`](backend/app/utils/security.py) | Bcrypt cryptographic hashing, salt management, and HS256 JWT access token generation. |
-| [`dependencies.py`](backend/app/utils/dependencies.py) | FastAPI dependency injection for user authentication and database handles. |
-| [`main.py`](backend/app/main.py) | Master application mounting routers, configuring CORS, and establishing global error handling. |
-| [`run.py`](backend/run.py) | Production Uvicorn entrypoint for ASGI server management. |
-
-### Task 10 — Enterprise Glassmorphism Frontend (`frontend/src/`)
-
-| View / Component | Purpose |
-|:---|:---|
-| [`LandingView.jsx`](frontend/src/views/LandingView.jsx) | High-converting landing view featuring product pitch, multi-model badges, and CTA. |
-| [`DashboardView.jsx`](frontend/src/views/DashboardView.jsx) | Candidate hub highlighting recent sessions, readiness score, and quick actions. |
-| [`ResumeUploadView.jsx`](frontend/src/views/ResumeUploadView.jsx) | Drag-and-drop resume ingestion interface with real-time extraction status. |
-| [`SkillGapView.jsx`](frontend/src/views/SkillGapView.jsx) | Interactive role alignment matrix featuring color-coded skill chips, fit percentage, and study roadmap. |
-| [`ScoreGauge.jsx`](frontend/src/components/ScoreGauge.jsx) | Animated SVG circular score gauge with dynamic color bands. |
-| [`Navbar.jsx`](frontend/src/components/Navbar.jsx) | Persistent navigation bar displaying user status, active model, and quick links. |
-
----
-
-## 📐 Data Models & Schemas
-
-Located in `backend/app/models/`:
-
-- **[`resume.py`](backend/app/models/resume.py)**:
-  - `PersonalInfo` — Name, email, phone, location, LinkedIn, GitHub, portfolio.
-  - `SkillItem` — Name, category (`frontend`, `backend`, `database`, `devops`, `cloud`), proficiency level.
-  - `Experience` — Company, role, duration, quantified achievements, technologies used.
-  - `ParsedResumeData` — Consolidated extracted resume representation.
-- **[`jd.py`](backend/app/models/jd.py)**:
-  - `SkillRequirement` — Required skill name, importance (`must_have`, `good_to_have`), years of experience.
-  - `ParsedJDData` — Role title, company, seniority level, technical skills, core responsibilities.
-- **[`session.py`](backend/app/models/session.py)**:
-  - `SkillGapAnalysis` — Overall match percentage, strong matches, partial matches, critical gaps, estimated study hours.
-  - `InterviewSessionDB` — MongoDB representation linking candidate, resume, JD, and skill gap report.
-- **[`question.py`](backend/app/models/question.py)**:
-  - `QuestionItem` — Question ID, text, category (`technical`, `architecture`, `behavioral`), target skill, difficulty, expected key points.
-- **[`practice.py`](backend/app/models/practice.py)**:
-  - `StudentAnswerSubmit` — Submitted answer text or audio transcript, response duration.
-  - `CategoryScores` — Four-dimensional scoring: Technical Depth, STAR Structure, Architecture, Clarity.
-  - `SessionSummary` — Overall score, category averages, total questions completed, readiness verdict.
-- **[`analytics.py`](backend/app/models/analytics.py)**:
-  - `AnalyticsOverview` — Total sessions, average readiness score, skill category radar data, historical score timeline.
-- **[`user.py`](backend/app/models/user.py)**:
-  - `UserCreate`, `UserLogin`, `UserResponse`, `UserInDB` — Authentication schemas with hashed credentials.
 
 ---
 
