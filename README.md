@@ -142,56 +142,67 @@
 
 ### End-to-End Candidate Lifecycle & Data Flow
 
-```
-  [ STEP 1: INGESTION ]
-  Candidate Resume (PDF/DOCX) ──┐
-                                ├─► file_handler.py ──► resume_service.py ──► ParsedResumeData
-  Target Job Description (Text) ┘        │
-                                         └───────────► jd_service.py     ──► ParsedJDData
-                                                               │
-                                                               ▼
-  [ STEP 2: SKILL GAP MATRIX ]
-  session_service.py ──► Semantic Matching (Strong Matches / Partials / Missing Gaps)
-         │               └─► Role Alignment Score (e.g., 82% Fit) + Study Hours
-         │
-         ▼
-  [ STEP 3: QUESTION GENERATION ]
-  practice_service.py ──► Adaptive 15-Question Bank (System Design / Concurrency / STAR)
-         │
-         ▼
-  [ STEP 4: LIVE MOCK INTERVIEW ]
-  PracticeView.jsx ──► Web Audio API ──► 48-Bar EQ Visualizer ──► Live Speech-to-Text
-         │
-         ▼
-  [ STEP 5: 4-RUBRIC EVALUATION ]
-  practice_service.py ──► Technical Depth (35%) + STAR (25%) + System (25%) + Clarity (15%)
-         │                └─► 88/100 Readiness Score + Strengths + Exemplar Response
-         │
-         ▼
-  [ STEP 6: CAREER TELEMETRY ]
-  analytics_service.py ──► Historical Progression Curves (64% → 76% → 88%) + Skill Radar
+```mermaid
+flowchart TD
+    subgraph S1["Step 1: Document Ingestion & Profiling"]
+        CR["Candidate Resume (PDF/DOCX)"] --> FH["file_handler.py"]
+        JD["Target Job Description (Text)"] --> JS["jd_service.py"]
+        FH --> RS["resume_service.py"]
+        RS --> PR["ParsedResumeData Schema"]
+        JS --> PJ["ParsedJDData Schema"]
+    end
+
+    subgraph S2["Step 2: Precision Skill Gap Analysis"]
+        PR --> SS["session_service.py"]
+        PJ --> SS
+        SS --> SGA["Skill Gap Matrix (82% Fit + Study Hours)"]
+    end
+
+    subgraph S3["Step 3: Adaptive Question Generation"]
+        SGA --> PS["practice_service.py"]
+        PS --> QB["15 Role-Tailored Questions (System / STAR)"]
+    end
+
+    subgraph S4["Step 4: Live Mock Interview Simulator"]
+        QB --> PV["PracticeView.jsx"]
+        PV --> WA["Web Audio API + 48-Bar EQ Visualizer"]
+        PV --> STT["Streaming Speech-to-Text"]
+    end
+
+    subgraph S5["Step 5: Multi-Rubric AI Evaluation"]
+        STT --> EV["practice_service.py Evaluator"]
+        EV --> SC["4-Vector Scoring (88/100 Readiness Verdict)"]
+    end
+
+    subgraph S6["Step 6: Career Telemetry & Tracking"]
+        SC --> AS["analytics_service.py"]
+        AS --> RC["Readiness Progression Curves + Radar"]
+    end
 ```
 
 ---
 
 ## 🔄 System Pipeline
 
-1. **Document Ingestion & Sanitization** — `file_handler.py` inspects mime types, validates the 10MB payload threshold, and extracts text streams from PDF and DOCX files in-memory.
-2. **Structured NLP Extraction** — `resume_service.py` extracts verified candidate competencies, education history, quantified achievements, and technologies into typed schemas.
-3. **Job Description Profiling** — `jd_service.py` deconstructs enterprise JDs into required vs. preferred skills, seniority levels, core responsibilities, and technical domains.
-4. **Precision Skill Gap Analysis** — `session_service.py` maps candidate skills against JD targets:
-   - **Strong Matches (Green)**: Verified competencies that satisfy requirements.
-   - **Partial Alignments (Amber)**: Adjacent technologies requiring brush-up.
-   - **Critical Gaps (Red)**: Missing dealbreaker requirements with estimated study time (e.g. *Docker ~4h, Redis ~2h*).
-5. **Adaptive Question Synthesis** — `practice_service.py` dynamically generates 15 high-signal questions tailored directly to the candidate's partial and missing competencies.
-6. **Live Interactive Mock Simulator** — `PracticeView.jsx` runs timed question delivery with audio playback, real-time microphone input, a 48-bar frequency equalizer, and streaming speech-to-text.
-7. **Multi-Rubric Evaluation** — Spoken responses are scored against four dimensions:
-   - **Technical Depth & Accuracy** (35%)
-   - **STAR Methodology & Delivery** (25%)
-   - **System Architecture & Scalability** (25%)
-   - **Communication Clarity & Conciseness** (15%)
-8. **Actionable Remediation & Exemplars** — Generates concrete feedback, key missing discussion points, and ideal candidate answers for rapid revision.
-9. **Longitudinal Telemetry & Analytics** — `analytics_service.py` records session scores, generates competency radar graphs, tracks readiness progression (e.g. 64% → 76% → 88%), and compiles customized study plans.
+```mermaid
+graph LR
+    Input[Candidate Resume & JD] --> NLP[NLP Ingestion Pipeline]
+    NLP --> SCR[Structured Candidate Representation]
+    SCR --> GapEngine[Skill Gap Engine]
+    GapEngine --> QEngine[Adaptive Question Synthesizer]
+    QEngine --> MockSim[Mock Voice Simulator]
+    MockSim --> Evaluator{4-Rubric Evaluator}
+    Evaluator -- PASS --> FinalReport[Final Readiness Report]
+    FinalReport --> Audit[Career Telemetry]
+    Evaluator -- FAIL --> Retry[Retry + Targeted Remediation]
+```
+
+1. **Ingestion** — `file_handler.py` fingerprints, sanitizes, and extracts text from multi-format notes (PDF/DOCX) & JDs in-memory.
+2. **NLP Extraction** — Competency extraction, experience quantification, assertion typing, and typed Pydantic candidate schema build.
+3. **Skill Gap Engine** — Tri-tier semantic matching (Strong, Partial, Gap) with confidence weights and study hour estimations.
+4. **Question Synthesis** — Multi-model AI gateway dynamically synthesizes 15 role-tailored technical, architecture, and STAR questions.
+5. **Mock Simulator** — Web Audio API captures microphone audio with a 48-bar dynamic visualizer and real-time speech-to-text.
+6. **Rubric Evaluation** — 4-vector rubric grading (Depth, STAR, Architecture, Clarity) with remediation drills and telemetry trace.
 
 ---
 
