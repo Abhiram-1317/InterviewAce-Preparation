@@ -18,14 +18,13 @@
 
 ## 🎬 Demo Video Walkthrough (3-Minute Full HD)
 
-[![InterviewAce 3-Minute Master Walkthrough](brag-output/demo-preview.gif)](https://github.com/Abhiram-1317/InterviewAce-Preparation/raw/main/brag-output/launch-video.mp4)
+[![InterviewAce 3-Minute Master Walkthrough](brag-output/demo-preview.gif)](https://github.com/Abhiram-1317/InterviewAce-Preparation/blob/main/brag-output/launch-video.mp4)
 
-> 👆 **Click the preview above to play the full 3-Minute 1080p Master Video directly in your browser.**
+> 🔊 **Click the preview image above to open the video with full audio and playback controls!**
 
-- **Master Video (1080p with Burned Captions)**: [**`brag-output/launch-video.mp4`**](https://github.com/Abhiram-1317/InterviewAce-Preparation/raw/main/brag-output/launch-video.mp4)
-- **Clean Video (No Burned Captions)**: [**`brag-output/launch-video-clean.mp4`**](https://github.com/Abhiram-1317/InterviewAce-Preparation/raw/main/brag-output/launch-video-clean.mp4)
-- **Subtitles (SRT)**: [**`brag-output/captions.srt`**](brag-output/captions.srt)
-- **Subtitles (WebVTT)**: [**`brag-output/captions.vtt`**](brag-output/captions.vtt)
+- 🎬 [**Watch Master Walkthrough with Audio & Controls (`launch-video.mp4`)**](https://github.com/Abhiram-1317/InterviewAce-Preparation/blob/main/brag-output/launch-video.mp4)
+- 🎥 [**Watch Clean Video (`launch-video-clean.mp4`)**](https://github.com/Abhiram-1317/InterviewAce-Preparation/blob/main/brag-output/launch-video-clean.mp4)
+- 📝 [**Subtitles (SRT)**](brag-output/captions.srt) | [**Subtitles (WebVTT)**](brag-output/captions.vtt)
 
 | Technical Specification | Production Detail |
 |:---|:---|
