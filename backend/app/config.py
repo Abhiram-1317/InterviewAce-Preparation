@@ -14,7 +14,15 @@ class Settings:
     PROJECT_NAME: str = "InterviewAce API"
     VERSION: str = "1.0"
 
-    MONGODB_URI: str = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
+    _raw_mongo_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
+    if _raw_mongo_uri:
+        _raw_mongo_uri = _raw_mongo_uri.strip().strip("\"'").strip()
+        if _raw_mongo_uri and not (_raw_mongo_uri.startswith("mongodb://") or _raw_mongo_uri.startswith("mongodb+srv://")):
+            if "mongodb.net" in _raw_mongo_uri:
+                _raw_mongo_uri = f"mongodb+srv://{_raw_mongo_uri}"
+            else:
+                _raw_mongo_uri = f"mongodb://{_raw_mongo_uri}"
+    MONGODB_URI: str = _raw_mongo_uri or "mongodb://localhost:27017"
     DATABASE_NAME: str = os.getenv("DATABASE_NAME", "interviewace")
     # AI Providers Configuration
     DEFAULT_AI_PROVIDER: str = os.getenv("DEFAULT_AI_PROVIDER", "gemini")

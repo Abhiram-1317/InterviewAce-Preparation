@@ -12,13 +12,19 @@ db: AsyncIOMotorDatabase | None = None
 async def connect_to_mongo():
     """Initializes the motor AsyncIOMotorClient and stores the database reference."""
     global client, db
+    uri = (settings.MONGODB_URI or "").strip().strip("\"'").strip()
+    if not (uri.startswith("mongodb://") or uri.startswith("mongodb+srv://")):
+        print(f"[!] Warning: Invalid MONGODB_URI scheme: '{uri[:25]}...'. Expected 'mongodb://' or 'mongodb+srv://'")
+        logger.warning("Invalid MONGODB_URI scheme: %s", uri[:25])
+        return
+
     try:
-        client = AsyncIOMotorClient(settings.MONGODB_URI, serverSelectionTimeoutMS=3000)
+        client = AsyncIOMotorClient(uri, serverSelectionTimeoutMS=5000)
         db = client[settings.DATABASE_NAME]
         # Verify connection by issuing a ping command
         await client.admin.command("ping")
         print("Successfully connected to MongoDB.")
-        logger.info("Successfully connected to MongoDB at %s", settings.MONGODB_URI)
+        logger.info("Successfully connected to MongoDB.")
     except Exception as e:
         print(f"Error connecting to MongoDB: {e}")
         logger.error("Error connecting to MongoDB: %s", e)
