@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>InterviewAce</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--card:#fff;--ink:#111;--mute:#6b6b6b;--line:#e7e5e1;--acc:#d4421f;--soft:#f6f4f0;--ok:#2f7d4f;--okb:#eef5f0;--warn:#8f6200;--warnb:#f8f1e0;--bad:#b3261e;--badb:#f9ebe9;--serif:Newsreader,Georgia,serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 'Public Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 28px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line)}
+.logo{font:500 23px var(--serif);color:var(--ink);text-decoration:none;letter-spacing:-.3px}.logo::after{content:'.';color:var(--acc)}
+nav{display:flex;gap:2px;align-items:center;flex-wrap:wrap}
+nav a{position:relative;padding:6px 10px;color:var(--mute);text-decoration:none;font-weight:500;font-size:14px;background:linear-gradient(var(--acc),var(--acc)) left bottom/0 2px no-repeat;transition:background-size .3s ease,color .2s}
+nav a:hover,nav a.on{color:var(--ink);background-size:calc(100% - 20px) 2px;background-position:10px bottom}
+header button.ghost{color:var(--mute)}header button.ghost:hover{color:var(--ink)}
+.api-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;background:var(--okb);color:var(--ok);margin-left:8px;border:1px solid #d0e5d5}
+.api-badge.offline{background:var(--soft);color:var(--mute);border-color:var(--line)}
+.api-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+main{max-width:1000px;margin:0 auto;padding:44px 24px 90px}
+h1{font:500 clamp(40px,7vw,68px)/1.03 var(--serif);letter-spacing:-1.8px;margin:0 0 20px}h1 em{font-style:italic;color:var(--acc)}
+h2{font:500 30px/1.2 var(--serif);margin:0 0 6px;letter-spacing:-.5px}h3{font-size:15px;font-weight:600;margin:0 0 8px}
+p{margin:0 0 12px}.mute{color:var(--mute)}.sm{font-size:13px}
+button,.btn{font:inherit;font-weight:500;padding:9px 16px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:border-color .2s,background .2s,color .2s,transform .15s}
+button:hover{border-color:var(--ink)}button:active{transform:scale(.97)}
+button.pri{background:var(--ink);border-color:var(--ink);color:#fff}button.pri:hover{background:var(--acc);border-color:var(--acc)}
+button.ghost{border:0;background:none;color:var(--mute);padding:9px 10px}button.ghost:hover{color:var(--ink)}button:disabled{opacity:.4;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:22px;transition:border-color .25s,transform .25s}.card:hover{border-color:#cdc9c1}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.sp{justify-content:space-between}.mt{margin-top:22px}
+.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:56px;align-items:center;padding:28px 0 56px}
+label{display:block;font-weight:500;font-size:13px;margin:14px 0 5px}
+input,textarea,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);transition:border-color .2s,box-shadow .2s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(17,17,17,.07)}
+textarea{resize:vertical;min-height:110px}
+.auth{max-width:400px;margin:28px auto}.err{color:var(--bad);font-size:13px;min-height:20px;margin-top:8px}
+.stat{font:500 36px/1.1 var(--serif);letter-spacing:-.5px}.big{font:500 64px/1 var(--serif);letter-spacing:-2px}
+.bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);border-radius:4px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:2px 9px;border-radius:4px;background:var(--soft);color:var(--ink);font-size:12px;font-weight:500;margin:0 6px 6px 0}
+.chip.ok{background:var(--okb);color:var(--ok)}.chip.wa{background:var(--warnb);color:var(--warn)}.chip.ba{background:var(--badb);color:var(--bad)}.chip button{border:0;background:none;padding:0;color:inherit;cursor:pointer;font-size:14px;line-height:1}
+.drop{border:1px dashed #cdc9c1;border-radius:8px;padding:32px;text-align:center;color:var(--mute);cursor:pointer;transition:border-color .2s,background .2s}.drop.on,.drop:hover{border-color:var(--ink);background:var(--soft)}
+.q{padding:18px 0;border-bottom:1px solid var(--line)}.q:last-child{border:0}
+.ans{background:var(--soft);border-radius:6px;padding:16px;margin-top:12px;animation:up .35s ease both}.ans b{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-top:10px}.ans b:first-child{margin-top:0}
+.sel{cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:16px;background:#fff;transition:border-color .2s,background .2s}.sel:hover{border-color:var(--ink)}.sel.on{border-color:var(--ink);background:var(--soft);box-shadow:inset 0 0 0 1px var(--ink)}
+.ov{position:fixed;inset:0;background:rgba(255,255,255,.92);display:grid;place-items:center;z-index:9;animation:fade .3s both}
+.spin{width:30px;height:30px;border:2px solid var(--line);border-top-color:var(--ink);border-radius:50%;animation:s .8s linear infinite;margin:0 auto 14px}
+#toast{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:6px;font-weight:500;font-size:14px;display:none;z-index:20;animation:up .3s both}
+.tbl{overflow-x:auto}ol.steps{padding-left:20px;margin:0}ol.steps li{margin-bottom:6px}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes grow{from{width:0}}
+@keyframes s{to{transform:rotate(360deg)}}
+.enter>*{animation:up .6s cubic-bezier(.2,.7,.2,1) both}
+.enter .grid>*{animation:up .6s cubic-bezier(.2,.7,.2,1) both}
+.enter .grid>*:nth-child(2){animation-delay:.08s}.enter .grid>*:nth-child(3){animation-delay:.16s}.enter .grid>*:nth-child(4){animation-delay:.24s}.enter .grid>*:nth-child(5){animation-delay:.32s}.enter .grid>*:nth-child(6){animation-delay:.4s}
+.enter>*:nth-child(2){animation-delay:.07s}.enter>*:nth-child(3){animation-delay:.14s}.enter>*:nth-child(4){animation-delay:.21s}
+.enter .bar i{animation:grow 1.1s .25s cubic-bezier(.2,.7,.2,1) both}
+@media print{header,.noprint{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<div id="top"></div><main id="app"></main><div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const API_BASE = window.INTERVIEWACE_API_URL || 'http://localhost:8000';
+let backendOnline = false;
+
+// Check backend connectivity
+async function checkBackend() {
+  try {
+    const res = await fetch(API_BASE + '/health', { signal: AbortSignal.timeout(2000) });
+    if (res.ok) {
+      const data = await res.json();
+      backendOnline = data.database === 'connected' || data.status === 'ok';
+    } else {
+      backendOnline = false;
+    }
+  } catch (e) {
+    backendOnline = false;
+  }
+}
+checkBackend();
+setInterval(checkBackend, 15000);
+
+const api = {
+  async get(path) {
+    try {
+      const h = S.token ? { 'Authorization': 'Bearer ' + S.token } : {};
+      const res = await fetch(API_BASE + path, { headers: h });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { return null; }
+  },
+  async post(path, body, isForm) {
+    try {
+      const h = S.token ? { 'Authorization': 'Bearer ' + S.token } : {};
+      if (!isForm && !(body instanceof FormData)) h['Content-Type'] = 'application/json';
+      const res = await fetch(API_BASE + path, {
+        method: 'POST',
+        headers: h,
+        body: isForm || (body instanceof FormData) ? body : JSON.stringify(body)
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        return { error: err.detail || ('Request failed (' + res.status + ')') };
+      }
+      return await res.json();
+    } catch (e) { return { error: e.message }; }
+  }
+};
+
+const SK={Python:'Language',JavaScript:'Language',Django:'Framework',Flask:'Framework',FastAPI:'Framework',React:'Framework',SQL:'Data',PostgreSQL:'Data',Redis:'Data',Git:'Tools',Docker:'Tools',AWS:'Tools','CI/CD':'Tools',Testing:'Tools','REST APIs':'Concepts','Data Structures':'Concepts',Communication:'Soft skills',Agile:'Soft skills'};
+const AL={'REST APIs':['rest'],Testing:['pytest','testing','unit test'],PostgreSQL:['postgres'],'CI/CD':['ci/cd','github actions','jenkins'],'Data Structures':['data structure','algorithm'],Communication:['communicat','present'],Agile:['agile','scrum'],AWS:['aws','amazon web']};
+const GR=[['Django','Flask','FastAPI'],['SQL','PostgreSQL'],['AWS','Docker'],['Testing','CI/CD'],['JavaScript','React']];
+const RS0=['Python','Django','SQL','Git','Flask','Communication','Data Structures'],JS0=['Python','Django','PostgreSQL','REST APIs','Docker','AWS','Testing','Git','Agile'];
+const Q=[
+{c:'Technical',d:'Easy',q:'What is the difference between a list and a tuple in Python?',sk:['Python'],kw:['mutable','immutable','tuple','list','hashable'],t:['Lists are mutable sequences; tuples are immutable.','Immutability lets tuples act as dictionary keys and makes them slightly lighter. Use lists for collections that change and tuples for fixed records.','When would you use a dataclass or named tuple instead?']},
+{c:'Technical',d:'Medium',q:'How do you avoid the N+1 query problem in the Django ORM?',sk:['Django','SQL'],kw:['select_related','prefetch_related','query','join','queryset'],t:['N+1 happens when related rows are fetched one query at a time inside a loop.','Use select_related for foreign keys (a SQL join) and prefetch_related for many-to-many or reverse relations. Check the query count with Django Debug Toolbar.','How would you find N+1 problems in production?']},
+{c:'Technical',d:'Medium',q:'Design a REST API for a task manager app.',sk:['REST APIs'],kw:['endpoint','get','post','status code','authentication','validation'],t:['Model resources (users, tasks) and map HTTP verbs to actions.','Example: GET/POST /tasks, GET/PATCH/DELETE /tasks/{id}. Return correct status codes, validate input, paginate lists, and protect routes with token authentication.','How would you version this API?']},
+{c:'Technical',d:'Hard',q:'Explain the Python GIL and when it matters.',sk:['Python'],kw:['gil','thread','multiprocessing','cpu','asyncio','i/o'],t:['The Global Interpreter Lock lets only one thread run Python bytecode at a time.','It hurts CPU-bound threaded code but not I/O-bound work. Use multiprocessing for CPU work and asyncio or threads for I/O.','Does the GIL make Python code thread-safe?']},
+{c:'Technical',d:'Medium',q:'How would you speed up a slow SQL query?',sk:['SQL','PostgreSQL'],kw:['index','explain','join','query plan','select'],t:['Measure first, then optimize.','Run EXPLAIN ANALYZE, add indexes on filtered and joined columns, select only needed columns, and avoid functions on indexed columns.','What are the downsides of too many indexes?']},
+{c:'Technical',d:'Easy',q:'How do you use Git in a team?',sk:['Git'],kw:['branch','merge','pull request','commit','conflict'],t:['Feature branches keep main stable.','Branch from main, commit small changes with clear messages, open a pull request for review, resolve conflicts by rebasing or merging, then merge.','Merge versus rebase: when do you use each?']},
+{c:'Technical',d:'Medium',q:'How do you test a Python application?',sk:['Testing','Python'],kw:['pytest','unit','mock','fixture','coverage','integration'],t:['Use a test pyramid: many unit tests, fewer integration tests.','Write unit tests with pytest, use fixtures for setup, mock external services, and track coverage in CI.','How do you test code that calls a third-party API?']},
+{c:'Behavioral',d:'Medium',q:'Tell me about a project you are proud of.',sk:['Communication'],kw:['project','built','result','team','challenge'],h:'Pick a project from your resume. Say what the problem was, your part, what you built, and a measurable result.'},
+{c:'Behavioral',d:'Medium',q:'Describe a time you disagreed with a teammate.',sk:['Communication','Agile'],kw:['listened','agreed','team','compromise','result'],h:'Show you listened, shared data, found a compromise, and kept the relationship strong.'},
+{c:'Situational',d:'Medium',q:'You find a serious bug the day before a release. What do you do?',sk:['Testing','Communication'],kw:['reproduce','priority','communicate','fix','test','team'],h:'Reproduce it, judge the impact, tell the team early, then fix, test, or delay with a clear reason.'},
+{c:'Situational',d:'Hard',q:'Requirements change halfway through a sprint. How do you respond?',sk:['Agile'],kw:['scope','prioritize','product owner','sprint','communicate'],h:'Clarify the change, discuss trade-offs with the product owner, re-prioritize, and update the plan.'},
+{c:'HR & culture',d:'Easy',q:'Why do you want this role?',sk:['Communication'],kw:['role','company','skills','grow','team','learn'],h:'Link your skills to the job, show you know the company, and say how you want to grow.'},
+{c:'HR & culture',d:'Easy',q:'Where do you see yourself in five years?',sk:['Communication'],kw:['grow','learn','lead','skills','team'],h:'Show realistic growth within the field, with skills you will build and the impact you want.'}];
+const CATS=['Technical','Behavioral','Situational','HR & culture'],MET=['Relevance','Completeness','Specificity','Structure','Communication'];
+let S={logs:[],dr:[],prof:{role:'',company:'',inst:'',deg:'',yr:'',gpa:'',loc:'',pace:140,fill:'medium',rigor:'strict',lang:'en'},user:null,users:{},sessions:[],resumes:[],ready:false,rs:[],js:[],edu:'',proj:'',resp:'',jd:{title:'',company:''},f:{c:'All',d:'All',b:false},open:null,bm:[],sess:null,view:null,file:'',sample:false,mode:'quick',cat:'Technical',timer:null,token:null,active_file_blob:null,backend_jd_id:null,backend_resume_id:null,backend_session_id:null,practice_id:null};
+try{const d=JSON.parse(localStorage.getItem('ia')||'{}');S.users=d.users||{};S.sessions=d.sessions||[];S.user=d.user||null;S.token=d.token||null;S.resumes=d.resumes||[];S.bm=d.bm||[];S.logs=d.logs||[];S.dr=d.dr||[];S.prof=Object.assign(S.prof,d.prof||{})}catch(e){}
+const save=()=>{try{localStorage.setItem('ia',JSON.stringify({users:S.users,sessions:S.sessions,user:S.user,token:S.token,resumes:S.resumes,bm:S.bm,logs:S.logs,dr:S.dr,prof:S.prof}))}catch(e){}};
+const go=r=>location.hash=='#/'+r?render():location.hash='#/'+r;
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t.k);t.k=setTimeout(()=>t.style.display='none',2600)};
+const mine=()=>S.sessions.filter(x=>x.u==(S.user&&S.user.email));
+const H=async p=>{try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return btoa(p)}};
+const detect=t=>{t=t.toLowerCase();return Object.keys(SK).filter(k=>(AL[k]||[k.toLowerCase()]).some(a=>t.includes(a)))};
+const gap=()=>{const st=[],pa=[],ga=[];S.js.forEach(s=>{if(S.rs.includes(s))st.push(s);else{const g=GR.find(x=>x.includes(s));g&&g.some(x=>S.rs.includes(x))?pa.push(s):ga.push(s)}});return{st,pa,ga,pct:Math.round((st.length+pa.length*.5)/Math.max(S.js.length,1)*100)}};
+const rel=q=>{const g=gap(),n=q.sk.filter(s=>g.ga.includes(s)).length*2+q.sk.filter(s=>g.pa.includes(s)).length+q.sk.filter(s=>S.js.includes(s)).length;return n};
+const ordered=()=>[...Q].sort((a,b)=>rel(b)-rel(a));
+const bar=v=>`<div class=bar><i style="width:${v}%"></i></div>`;
+const clamp=v=>Math.max(0,Math.min(100,Math.round(v)));
+
+function nav(r){const a=S.user?[['dashboard','Dashboard'],['upload','New preparation'],['questions','Questions'],['practice','Practice'],['report','Reports'],['history','History'],['progress','Progress'],['records','Cloud tasks'],['settings','Settings']]:[['landing','Home'],['feat','Features'],['about','About'],['login','Login'],['register','Register']];
+const badge = `<span class="api-badge ${backendOnline?'':'offline'}" title="API: ${API_BASE}"><span class=api-dot></span>${backendOnline?'API Connected':'Local Mode'}</span>`;
+return`<header><div class=row><a class=logo href="#/${S.user?'dashboard':'landing'}">InterviewAce</a>${badge}</div><nav>${a.map(([k,l])=>`<a href="#/${k}" class="${r==k?'on':''}">${L(l)}</a>`).join('')}${S.user?'<button class=ghost onclick="logout()">Log out</button>':''}</nav></header>`}
+function logout(){S.user=null;S.token=null;S.sess=null;S.ready=false;save();go('landing')}
+
+const P={};
+P.landing=()=>`<section class=hero><div><h1>Prepare smarter.<br><em>Interview better.</em></h1><p class=mute style="font-size:17px;max-width:460px">Upload your resume and a job description. InterviewAce finds your skill gaps, writes questions for the role, and scores your practice answers.</p><div class=row><button class=pri onclick="go('register')">Get started</button><button onclick="go('login')">Log in</button></div></div>
+<div class=card><div class="row sp"><b>Python Developer</b><span class="chip ok">Sample preview</span></div><div class=stat style="margin:10px 0 4px">72%</div><p class="mute sm">Match with the job description</p>${bar(72)}<div class=mt>${[['Python','ok','Strong'],['PostgreSQL','wa','Partial'],['Docker','ba','Gap']].map(x=>`<div class="row sp" style="padding:6px 0;border-top:1px solid var(--line)"><span>${x[0]}</span><span class="chip ${x[1]}" style="margin:0">${x[2]}</span></div>`).join('')}</div></div></section>
+<section id=feat class="grid g3"><div class=card><h3>Find your gaps</h3><p class=mute>See which required skills you already have, partly have, or are missing.</p></div><div class=card><h3>Questions for the role</h3><p class=mute>Technical, behavioral, situational and culture questions with answer frameworks.</p></div><div class=card><h3>Scored practice</h3><p class=mute>Get feedback on relevance, structure and detail, then retry until it improves.</p></div></section>
+<section class="grid g3 mt"><div class=card><h3>Speak or type</h3><p class=mute>Answer with your voice using the mic, or type. Live rubric chips show which key points you covered.</p></div><div class=card><h3>Speech metrics</h3><p class=mute>Filler-word rate and speaking pace on every answer and report.</p></div><div class=card><h3>Choose your coach</h3><p class=mute>Supportive coach, strict hiring panel, or a stress panel that scores harder.</p></div><div class=card><h3>History and progress</h3><p class=mute>Search past plans, archive old ones, and track growth against company bars.</p></div><div class=card><h3>Task log and backup</h3><p class=mute>See what the app did for you, then back up and restore your data.</p></div><div class=card><h3>11 languages</h3><p class=mute>${LANGS.map(x=>x[1]).join(' · ')}</p></div></section><section id=about class="card mt"><h2>How it works</h2><ol class=steps><li>Create an account and open your dashboard.</li><li>Upload a resume and a job description.</li><li>Check the details the AI extracted.</li><li>Review your skill gap analysis.</li><li>Learn questions and suggested answers.</li><li>Practice, get feedback, and read your session report.</li></ol></section>`;
+
+P.register=()=>`<div class="card auth"><h2>Create account</h2><p class=mute>Start preparing in a minute.</p><form onsubmit="return reg(event)"><label>Full name</label><input id=n required><label>Email</label><input id=e type=email required><label>Password</label><input id=p type=password minlength=8 required><label>Confirm password</label><input id=p2 type=password required><div class=err id=er></div><button class=pri style="width:100%">Create account</button></form><p class="mute sm mt">Already registered? <a href="#/login">Log in</a></p></div>`;
+async function reg(ev){
+  ev.preventDefault();
+  const n=$('#n').value.trim(),e=$('#e').value.trim().toLowerCase(),p=$('#p').value;
+  if(p!=$('#p2').value)return $('#er').textContent='Passwords do not match.',false;
+  
+  // Try Backend API registration first
+  if (backendOnline) {
+    const r = await api.post('/api/v1/auth/register', { full_name: n, email: e, password: p });
+    if (r && r.error && !r.error.includes('already registered')) {
+      return $('#er').textContent = r.error, false;
+    }
+    const form = new URLSearchParams({ username: e, password: p });
+    const lr = await api.post('/api/v1/auth/login', form, true);
+    if (lr && lr.access_token) {
+      S.token = lr.access_token;
+    }
+  }
+
+  S.users[e]={name:n,h:await H(p)};
+  S.user={email:e,name:n};
+  save();
+  toast('Account created');
+  go('dashboard');
+  return false;
+}
+
+P.login=()=>`<div class="card auth"><h2>Welcome back</h2><p class=mute>Sign in to continue your preparation.</p><form onsubmit="return login(event)"><label>Email</label><input id=e type=email required><label>Password</label><input id=p type=password required><div class=err id=er></div><button class=pri style="width:100%">Sign in</button></form><button style="width:100%;margin-top:10px" onclick="guest()">Continue as guest</button><div class="row sp mt"><button class=ghost onclick="toast('Password reset is not available in this demo.')">Forgot password</button><a href="#/register">Create account</a></div></div>`;
+async function login(ev){
+  ev.preventDefault();
+  const e=$('#e').value.trim().toLowerCase(),p=$('#p').value;
+  
+  // Try Backend API login
+  if (backendOnline) {
+    const form = new URLSearchParams({ username: e, password: p });
+    const lr = await api.post('/api/v1/auth/login', form, true);
+    if (lr && lr.access_token) {
+      S.token = lr.access_token;
+      const me = await api.get('/api/v1/auth/me');
+      S.user = { email: e, name: (me && me.full_name) || (S.users[e] && S.users[e].name) || e.split('@')[0] };
+      save();
+      toast('Signed in');
+      go('dashboard');
+      return false;
+    }
+  }
+
+  // Local fallback
+  const u=S.users[e];
+  if(!u||u.h!=await H(p))return $('#er').textContent='Email or password is incorrect.',false;
+  S.user={email:e,name:u.name};
+  save();
+  go('dashboard');
+  return false;
+}
+
+P.dashboard=()=>{
+  const m=mine(),qn=m.reduce((a,s)=>a+s.items.length,0),avg=m.length?Math.round(m.reduce((a,s)=>a+s.ov,0)/m.length):0;
+  const pts=m.map((s,i)=>[m.length>1?20+i*(260/(m.length-1)):150,100-s.ov*.9]);
+  const chart=m.length?`<svg viewBox="0 0 300 110" width="100%" role=img aria-label="Score by session"><polyline fill=none stroke="var(--acc)" stroke-width=2 points="${pts.map(p=>p.join(',')).join(' ')}"/>${pts.map(p=>`<circle cx=${p[0]} cy=${p[1]} r=4 fill="var(--acc)"/>`).join('')}</svg>`:'<p class=mute>Complete a practice session to see your progress.</p>';
+  
+  // Fetch async analytics in background if logged in
+  if (backendOnline && S.token) {
+    api.get('/api/v1/analytics/overview').then(an => {
+      if (an && an.total_sessions != null && $('#db_tot')) {
+        $('#db_tot').textContent = an.total_sessions;
+        $('#db_q').textContent = an.total_questions_practiced;
+        $('#db_avg').textContent = an.average_overall_score;
+        $('#db_trend').textContent = an.readiness_trend;
+      }
+    });
+  }
+
+  return`<div class="row sp"><div><h2>Hi, ${esc(S.user.name.split(' ')[0])}</h2><p class=mute>Start a new plan for a job, or pick up where you left off.</p></div><div class=row><button class=pri onclick="go('upload')">New preparation</button><button onclick="contPractice()">Continue practice</button><button onclick="go('report')">View reports</button></div></div>
+<div class="grid g3 mt"><div class=card><div class=stat id=db_tot>${m.length}</div><span class=mute>Preparation sessions</span></div><div class=card><div class=stat id=db_q>${qn}</div><span class=mute>Questions practiced</span></div><div class=card><div class=stat id=db_avg>${avg||'–'}</div><span class=mute>Average score</span></div><div class=card><div class=stat id=db_trend>${avg>=80?'Strong':avg>=60?'Rising':avg?'Building':'–'}</div><span class=mute>Interview verdict</span></div></div>
+<div class="grid g2 mt"><div class=card><h3>Progress</h3>${chart}</div><div class=card><h3>Recent sessions</h3>${m.length?[...m].reverse().slice(0,5).map(s=>`<div class="row sp" style="padding:8px 0;border-top:1px solid var(--line)"><span>${esc(s.date)} <span class=mute>· ${esc(s.mode)}</span></span><button onclick="S.view=${S.sessions.indexOf(s)};go('report')">${s.ov}/100</button></div>`).join(''):'<p class=mute>No sessions yet. Choose New preparation to begin.</p>'}</div></div>`
+};
+function contPractice(){S.sess&&S.sess.live?go('practice'):toast('No unfinished session. Start one from Practice.')}
+
+P.upload=()=>`<h2>Upload resume and job description</h2><p class=mute>Add both and we will compare them.</p><div class="grid g2 mt"><div class=card><h3>Resume</h3>
+<div class=drop id=dz onclick="$('#rf').click()" ondragover="event.preventDefault();this.classList.add('on')" ondragleave="this.classList.remove('on')" ondrop="event.preventDefault();pick(event.dataTransfer.files[0])">${S.file?'Selected: '+esc(S.file):'Drag and drop a PDF or DOCX here, or click to browse'}</div><input id=rf type=file accept=".pdf,.docx" hidden onchange="pick(this.files[0])">
+${S.resumes.length?`<label>Or use a previous resume</label><select onchange="S.file=this.value;S.sample=false;render()"><option value="">Choose…</option>${S.resumes.map(r=>`<option ${r==S.file?'selected':''}>${esc(r)}</option>`).join('')}</select>`:''}
+<div class=row style="margin-top:12px"><button onclick="loadSampleResume()">Use sample resume</button></div>
+<label>Resume text (optional, improves skill detection)</label><textarea id=rt placeholder="Paste your resume text here"></textarea></div>
+<div class=card><h3>Job description</h3><label>Job title</label><input id=jt value="${esc(S.jd.title)}" placeholder="Python Developer"><label>Company</label><input id=jc value="${esc(S.jd.company)}" placeholder="Optional"><label>Job description text</label><textarea id=jd style="min-height:170px" placeholder="Paste the job description here"></textarea><button class=ghost onclick="$('#jd').value='We need a Python Developer with Django, PostgreSQL, REST APIs, Docker and AWS experience. You will write tests, use Git, and work in an Agile team.'">Use sample job description</button></div></div>
+<div class="row mt"><button class=pri onclick="analyze()">Analyze & generate</button></div><div id=ovl></div>`;
+
+function loadSampleResume() {
+  S.file = 'sample_python_resume.pdf';
+  S.sample = true;
+  // Create a minimal in-memory PDF blob so it can be uploaded to the backend if needed
+  const miniPdf = `%PDF-1.4\n1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >> endobj\nxref\n0 4\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n0000000115 00000 n \ntrailer << /Size 4 /Root 1 0 R >>\nstartxref\n190\n%%EOF\n`;
+  S.active_file_blob = new Blob([miniPdf], { type: 'application/pdf' });
+  render();
+}
+
+function pick(f){
+  if(!f)return;
+  if(!/\.(pdf|docx)$/i.test(f.name))return toast('Please choose a PDF or DOCX file.');
+  S.file=f.name;
+  S.sample=false;
+  S.active_file_blob=f;
+  const t=$('#rt')?$('#rt').value:'';
+  render();
+  if($('#rt'))$('#rt').value=t;
+}
+
+async function analyze(){
+  const rt=$('#rt').value,jd=$('#jd').value,jt=$('#jt').value.trim();
+  if(!S.file&&!rt.trim())return toast('Add a resume first.');
+  if(!jd.trim()&&!jt)return toast('Add a job title or description.');
+  S.jd={title:jt||'Target role',company:$('#jc').value.trim()};
+  const a=detect(rt),b=detect(jd+' '+jt);
+  S.rs=rt.trim()&&a.length?a:[...RS0];
+  S.js=b.length?b:[...JS0];
+  S.resp=jd.slice(0,300);
+  if(S.file&&!S.resumes.includes(S.file)&&!S.sample)S.resumes.push(S.file);
+  save();
+
+  $('#ovl').innerHTML='<div class=ov><div class=card style="text-align:center"><div class=spin></div><b id=ms>Reading your resume…</b></div></div>';
+
+  // Attempt real backend AI integration if connected
+  if (backendOnline && S.token) {
+    try {
+      // 1. Submit JD
+      const jdResp = await api.post('/api/v1/jd/paste', { raw_text: jd || jt });
+      if (jdResp && jdResp.jd_id) {
+        S.backend_jd_id = jdResp.jd_id;
+        if (jdResp.parsed_data && jdResp.parsed_data.required_skills) {
+          const reqs = jdResp.parsed_data.required_skills.map(s => typeof s === 'string' ? s : (s.name || s.skill)).filter(Boolean);
+          if (reqs.length) S.js = reqs;
+        }
+      }
+
+      // 2. Upload Resume File
+      if (S.active_file_blob) {
+        const fd = new FormData();
+        fd.append('file', S.active_file_blob, S.file || 'resume.pdf');
+        const resResp = await api.post('/api/v1/resume/upload', fd);
+        if (resResp && resResp.resume_id) {
+          S.backend_resume_id = resResp.resume_id;
+          if (resResp.parsed_data && resResp.parsed_data.skills) {
+            const rskills = (resResp.parsed_data.skills.technical_skills || []).map(s => typeof s === 'string' ? s : (s.name || s.skill)).filter(Boolean);
+            if (rskills.length) S.rs = rskills;
+          }
+        }
+      }
+
+      // 3. Trigger Session & Gap Analysis
+      if (S.backend_jd_id && S.backend_resume_id) {
+        const sessResp = await api.post('/api/v1/session/create', { resume_id: S.backend_resume_id, jd_id: S.backend_jd_id });
+        if (sessResp && sessResp.session_id) {
+          S.backend_session_id = sessResp.session_id;
+        }
+      }
+    } catch (e) {
+      console.warn('Backend sync failed, using local engine:', e);
+    }
+  }
+
+  setTimeout(()=>$('#ms')&&($('#ms').textContent='Comparing with the job description…'),600);
+  setTimeout(()=>{
+    S.ready=true;
+    log('parse_resume','Parsed '+(S.file||'pasted resume')+' and the job description',1200);
+    go('review');
+  },1200);
+}
+
+const chips=(k,arr)=>arr.map((s,i)=>`<span class=chip>${esc(s)}<button aria-label="Remove ${esc(s)}" onclick="rm('${k}',${i})">×</button></span>`).join('');
+const rm=(k,i)=>{S[k].splice(i,1);rr()};
+const add=(k,id)=>{const v=$('#'+id).value.trim();if(!v)return;const m=Object.keys(SK).find(x=>x.toLowerCase()==v.toLowerCase())||v;if(!S[k].includes(m))S[k].push(m);rr()};
+const rr=()=>{const y=scrollY;render();scrollTo(0,y)};
+
+P.review=()=>`<h2>Review extracted information</h2><p class=mute>Fix anything the AI got wrong. Errors here carry into every question.</p><div class="grid g2 mt"><div class=card><h3>Resume summary</h3><label>Name</label><input value="${esc(S.user.name)}" readonly><label>Education</label><input id=ed value="${esc(S.edu||'B.Tech, Computer Science')}" onchange="S.edu=this.value"><label>Skills found</label><div>${chips('rs',S.rs)||'<span class=mute>None found</span>'}</div><div class=row><input id=ra placeholder="Add a skill" style="flex:1" onkeydown="if(event.key=='Enter')add('rs','ra')"><button onclick="add('rs','ra')">Add</button></div><label>Projects and experience</label><textarea id=pj onchange="S.proj=this.value">${esc(S.proj||'Task manager web app built with Django and SQL.\nIntern, backend team: built REST endpoints and fixed bugs.')}</textarea></div>
+<div class=card><h3>Job description summary</h3><label>Role</label><input value="${esc(S.jd.title)}" onchange="S.jd.title=this.value"><label>Company</label><input value="${esc(S.jd.company)}" onchange="S.jd.company=this.value"><label>Required skills</label><div>${chips('js',S.js)}</div><div class=row><input id=ja placeholder="Add a requirement" style="flex:1" onkeydown="if(event.key=='Enter')add('js','ja')"><button onclick="add('js','ja')">Add</button></div><label>Responsibilities</label><textarea onchange="S.resp=this.value">${esc(S.resp)}</textarea></div></div>
+<div class="row mt"><button onclick="go('upload')">Back</button><button class=pri onclick="S.proj=$('#pj').value;go('gap')">Confirm & see skill gap</button></div>`;
+
+P.gap=()=>{const g=gap(),cats={};const gk=S.js.join()+S.rs.join();if(S.gl!=gk){S.gl=gk;log('gap_calculation','Matched '+S.rs.length+' resume skills with '+S.js.length+' job requirements',40)}S.js.forEach(s=>{const c=SK[s]||'Other';cats[c]=cats[c]||[0,0];cats[c][1]++;if(g.st.includes(s))cats[c][0]++;else if(g.pa.includes(s))cats[c][0]+=.5});
+const col=(t,a,c,n)=>`<div class=card><h3>${t} <span class="mute sm">(${a.length})</span></h3><p class="mute sm">${n}</p>${a.map(s=>`<span class="chip ${c}">${esc(s)}</span>`).join('')||'<span class=mute>None</span>'}</div>`;
+const pri=[...g.ga.map(s=>[s,'Gap',4]),...g.pa.map(s=>[s,'Partial',2])];
+return`<div class="row sp"><div><h2>Skill gap analysis</h2><p class=mute>${esc(S.jd.title)}${S.jd.company?' at '+esc(S.jd.company):''}</p></div><div style="text-align:right"><div class=big>${g.pct}%</div><span class="mute sm">Estimated match, not a hiring prediction</span></div></div>
+<div class="grid g3 mt">${col('Strong matches',g.st,'ok','Skills that meet the requirements.')}${col('Partial matches',g.pa,'wa','A related skill is on your resume. Needs work.')}${col('Skill gaps',g.ga,'ba','Required but not found on your resume.')}</div>
+<div class="grid g2 mt"><div class=card><h3>Match by category</h3>${Object.entries(cats).map(([c,v])=>`<div style="margin-bottom:10px"><div class="row sp sm"><span>${c}</span><span class=mute>${Math.round(v[0]/v[1]*100)}%</span></div>${bar(Math.round(v[0]/v[1]*100))}</div>`).join('')}</div>
+<div class=card><h3>Preparation priorities</h3>${pri.length?pri.map(p=>`<div class="row sp" style="padding:7px 0;border-top:1px solid var(--line)"><span>${esc(p[0])} <span class="chip ${p[1]=='Gap'?'ba':'wa'}" style="margin-left:6px">${p[1]}</span></span><span class=mute>~${p[2]}h</span></div>`).join('')+`<p class="sm mute mt">Suggested study time: ${pri.reduce((a,p)=>a+p[2],0)} hours.</p>`:'<p class=mute>No gaps. Focus on practice.</p>'}</div></div>
+<div class="row mt"><button onclick="go('review')">Back to review</button><button class=pri onclick="go('questions')">View questions</button></div>`};
+
+function ans(q){return q.t?`<b>Concept</b>${q.t[0]}<b>Explanation</b>${q.t[1]}<b>Connect to your project</b>Name a project from your resume where you used this.<b>Likely follow-up</b>${q.t[2]}`:`<b>${q.h}</b><b>S · Situation</b>What was happening?<b>T · Task</b>What was your responsibility?<b>A · Action</b>What exactly did you do?<b>R · Result</b>What changed? Add a number if you can.`}
+const sug=q=>q.t?q.t[0]+' '+q.t[1]:q.h;
+P.questions=()=>{
+  if(!S.ready){S.rs=S.rs.length?S.rs:[...RS0];S.js=S.js.length?S.js:[...JS0]}
+  const g=gap();
+
+  // If backend session exists, fetch questions in background
+  if (backendOnline && S.token && S.backend_session_id && !S.questions_synced) {
+    api.post(`/api/v1/session/${S.backend_session_id}/generate-questions`).then(res => {
+      if (res && res.questions && res.questions.length) {
+        res.questions.forEach(bq => {
+          if (!Q.some(x => x.q === bq.question_text)) {
+            Q.unshift({
+              question_id: bq.question_id,
+              c: (bq.category.charAt(0).toUpperCase() + bq.category.slice(1).toLowerCase()),
+              d: (bq.difficulty.charAt(0).toUpperCase() + bq.difficulty.slice(1).toLowerCase()),
+              q: bq.question_text,
+              sk: bq.related_skill ? [bq.related_skill] : ['Technical'],
+              kw: ['architecture', 'project', 'solution'],
+              h: bq.resume_reference || 'Focus on your past experience'
+            });
+          }
+        });
+        S.questions_synced = true;
+        rr();
+      }
+    });
+  }
+
+  let L=ordered().filter(q=>(S.f.c=='All'||q.c==S.f.c)&&(S.f.d=='All'||q.d==S.f.d)&&(!S.f.b||S.bm.includes(Q.indexOf(q))));
+  const pill=(k,v)=>`<button class="${S.f[k]==v?'pri':''}" onclick="S.f.${k}='${v}';rr()">${v}</button>`;
+  return`<h2>Question bank</h2><p class=mute>${L.length} questions ordered by relevance to your gaps. <span class=sm>Personalized for ${esc(S.jd.title||'your role')}</span></p>
+<div class="row mt">${['All',...CATS].map(v=>pill('c',v)).join('')}</div><div class=row style="margin:8px 0 0">${['All','Easy','Medium','Hard'].map(v=>pill('d',v)).join('')}<button class="${S.f.b?'pri':''}" onclick="S.f.b=!S.f.b;rr()">★ Bookmarked</button></div>
+<div class="card mt">${L.map(q=>{const i=Q.indexOf(q);return`<div class=q><div class="row sp"><b>${esc(q.q)}</b><button class=ghost onclick="tb(${i})" aria-label="Bookmark" style="color:${S.bm.includes(i)?'var(--warn)':'var(--mute)'};font-size:18px">${S.bm.includes(i)?'★':'☆'}</button></div>
+<div class=row style="margin:6px 0"><span class=chip>${q.c}</span><span class="chip wa">${q.d}</span>${q.sk.map(s=>`<span class="chip ${g.ga.includes(s)?'ba':g.pa.includes(s)?'wa':'ok'}">${s}</span>`).join('')}</div>
+<p class="mute sm" style="margin:0 0 8px">Why this question: ${q.sk.some(s=>g.ga.includes(s))?'it targets a skill gap in your analysis':q.sk.some(s=>S.js.includes(s))?'it matches a requirement in the job description':'it is common in every interview'}.</p><div class=row><button onclick="S.open=S.open==${i}?null:${i};rr()">${S.open==i?'Hide answer':'View answer'}</button><button class=pri onclick="startSess([Q[${i}]],'Single question')">Practice this</button><button onclick="dr(${i})">${S.dr.includes(i)?'✓ In drill':'+ Add to drill'}</button></div>${S.open==i?`<div class=ans>${ans(q)}</div>`:''}</div>`}).join('')||'<p class=mute>No questions match these filters.</p>'}</div>
+<div class="row mt"><button onclick="go('gap')">Back to skill gap</button><button onclick="S.dr.length?startSess(S.dr.map(i=>Q[i]),'Drill'):toast('Add questions to your drill first.')">Start drill (${S.dr.length})</button><button class=pri onclick="go('practice')">Start practice</button></div>`
+};
+const tb=i=>{const k=S.bm.indexOf(i);k<0?S.bm.push(i):S.bm.splice(k,1);save();rr()};
+
+async function startSess(list,mode){
+  S.sess={list,i:0,res:[],live:true,mode,last:null,t00:Date.now()};
+  
+  // Initialize backend practice session if available
+  if (backendOnline && S.token && S.backend_session_id) {
+    const pStart = await api.post('/api/v1/practice/start', {
+      interview_session_id: S.backend_session_id,
+      practice_type: S.mode || 'quick'
+    });
+    if (pStart && pStart.practice_id) {
+      S.practice_id = pStart.practice_id;
+    }
+  }
+  
+  go('practice');
+}
+
+function begin(){const o=ordered();let l;const m=S.mode,mm=mine();
+if(m=='quick')l=o.slice(0,5);else if(m=='full')l=o.slice(0,15);else if(m=='cat')l=o.filter(q=>q.c==S.cat).slice(0,8);
+else{let w='Technical';if(mm.length){const c=mm[mm.length-1].cats;w=Object.keys(c).sort((a,b)=>c[a]-c[b])[0]}l=o.filter(q=>q.c==w).slice(0,5)}
+startSess(l,{quick:'Quick practice',full:'Full mock',cat:'Category: '+S.cat,weak:'Weak areas'}[m])}
+P.practice=()=>{if(!(S.sess&&S.sess.live)){const M=[['quick','Quick practice','5 questions'],['full','Full mock interview','Up to 15 questions'],['cat','Category focus','One category only'],['weak','Weak areas','Your lowest-scoring category']];
+return`<h2>Practice interview</h2><p class=mute>Choose how you want to practice.</p><div class="grid g2 mt">${M.map(m=>`<div class="sel ${S.mode==m[0]?'on':''}" onclick="S.mode='${m[0]}';rr()"><b>${m[1]}</b><div class="mute sm">${m[2]}</div></div>`).join('')}</div>
+${S.mode=='cat'?`<label>Category</label><select onchange="S.cat=this.value">${CATS.map(c=>`<option ${c==S.cat?'selected':''}>${c}</option>`).join('')}</select>`:''}<div class="row mt"><button class=pri onclick="begin()">Start practice</button></div>`}
+const s=S.sess,q=s.list[s.i];setTimeout(startTimer,0);
+return`<div class="row sp"><span class=mute>Question ${s.i+1} of ${s.list.length} · ${esc(s.mode)}</span><b id=tm>3:00</b></div>${bar(Math.round(s.i/s.list.length*100))}
+<div class="card mt"><span class=chip>${q.c}</span><span class="chip wa">${q.d}</span><h2 style="margin-top:8px">${esc(q.q)}</h2><textarea id=an style="min-height:200px" placeholder="Type your answer in your own words" oninput="wc()"></textarea><div class="row sp"><span class="mute sm" id=wc>0 words</span><span class="mute sm" id=hn></span></div><div id=rb class=sm style="margin-top:8px"></div>
+<div class="row mt"><button onclick="$('#hn').textContent='Hint: mention '+Q[${Q.indexOf(q)}].kw.slice(0,3).join(', ')">Hint</button><button id=mic onclick="mic()">Speak</button><button onclick="skipQ()">Skip</button><button class=pri onclick="submitA()">Submit answer</button><button class=ghost onclick="endSess()">End session</button></div></div>`};
+const FW=/\b(um+|uh+|like|you know|basically|actually)\b/g;
+const wc=()=>{const v=$('#an').value,l=v.toLowerCase(),w=v.trim().split(/\s+/).filter(Boolean).length,f=(l.match(FW)||[]).length,q=S.sess.list[S.sess.i];$('#wc').textContent=w+' words · '+f+' filler';$('#rb').innerHTML='<span class=mute>Rubric:</span> '+q.kw.map(k=>`<span class="chip ${l.includes(k)?'ok':''}">${l.includes(k)?'✓ ':''}${k}</span>`).join('')};
+function startTimer(){clearInterval(S.timer);S.t0=Date.now();try{wc()}catch(e){}let t=180;const f=()=>{const e=$('#tm');if(!e)return clearInterval(S.timer);e.textContent=t>0?Math.floor(t/60)+':'+String(t%60).padStart(2,'0'):'Time is up';if(t>0)t--};f();S.timer=setInterval(f,1000)}
+function score(q,t){const w=t.trim().split(/\s+/).filter(Boolean).length,l=t.toLowerCase(),hit=q.kw.filter(k=>l.includes(k)),miss=q.kw.filter(k=>!l.includes(k));
+const nums=(t.match(/\d+/g)||[]).length,proj=(l.match(/project|built|implemented|used|using|created|developed/g)||[]).length;
+const st=(l.match(/situation|task|action|result|outcome|as a result|responsible|when i|first|then|because|for example|however|therefore/g)||[]).length;
+const sc=[clamp(15+hit.length/q.kw.length*85),clamp(w/110*100),clamp(20+nums*15+proj*10+hit.length*6),clamp(20+st*14+(w>40?15:0)),clamp(25+Math.min(w,90)*.6-(w>0&&w/Math.max(1,(t.match(/[.!?]/g)||[]).length)>40?15:0))];
+const ov=clamp(Math.round(sc.reduce((a,b)=>a+b,0)/5)+({supportive:6,strict:0,hostile:-6}[S.prof.rigor]||0)),low=sc.indexOf(Math.min(...sc));
+const tips=['Cover the core terms the interviewer expects.','Add more depth: explain why, not only what.','Add a concrete example from a project, with a number.','Structure it: context, action, result.','Use shorter sentences and a clear opening line.'];
+return{fill:Math.round((l.match(FW)||[]).length/Math.max(w,1)*100),wpm:Math.round(w/Math.max((Date.now()-(S.t0||Date.now()))/60000,.25)),sc,ov,strong:[...(hit.length?['Covered key ideas: '+hit.slice(0,3).join(', ')]:[]),...(w>=60?['Good level of detail']:[]),...(nums?['Used specific numbers']:[])],miss:miss.slice(0,3),tip:tips[low]}}
+
+async function submitA(){
+  const t=$('#an').value;
+  if(t.trim().split(/\s+/).filter(Boolean).length<3)return toast('Write a little more before submitting.');
+  const s=S.sess,q=s.list[s.i],r=score(q,t);
+  s.last={q:Q.indexOf(q),ans:t,...r};
+
+  // Live Backend AI Evaluation
+  if (backendOnline && S.token && S.practice_id) {
+    toast('Grading answer with AI…');
+    const qid = q.question_id || ('q-' + (s.i + 1));
+    const evalRes = await api.post(`/api/v1/practice/${S.practice_id}/submit`, {
+      question_id: qid,
+      student_answer: t,
+      time_taken_seconds: Math.round((Date.now() - (S.t0 || Date.now())) / 1000)
+    });
+    if (evalRes && evalRes.evaluation) {
+      const ev = evalRes.evaluation;
+      if (ev.overall_score != null) s.last.ov = ev.overall_score;
+      if (ev.strengths && ev.strengths.length) s.last.strong = ev.strengths;
+      if (ev.key_points_missed && ev.key_points_missed.length) s.last.miss = ev.key_points_missed;
+      if (ev.specific_tip) s.last.tip = ev.specific_tip;
+      if (ev.dimension_scores) {
+        const ds = ev.dimension_scores;
+        s.last.sc = [
+          (ds.relevance && ds.relevance.score) || 20,
+          (ds.completeness && ds.completeness.score) || 20,
+          (ds.specificity && ds.specificity.score) || 16,
+          (ds.structure && ds.structure.score) || 12,
+          (ds.communication && ds.communication.score) || 12
+        ];
+      }
+    }
+  }
+
+  s.res[s.i]=s.last;
+  go('feedback');
+}
+
+function skipQ(){
+  const s=S.sess;
+  const qid = s.list[s.i].question_id || ('q-' + (s.i + 1));
+  if (backendOnline && S.token && S.practice_id) {
+    api.post(`/api/v1/practice/${S.practice_id}/skip`, { question_id: qid });
+  }
+  s.res[s.i]={q:Q.indexOf(s.list[s.i]),skipped:true};
+  nextQ();
+}
+
+function nextQ(){const s=S.sess;s.i++;s.i>=s.list.length?finish():go('practice')}
+function endSess(){finish()}
+
+async function finish(){
+  clearInterval(S.timer);
+  const s=S.sess,a=s.res.filter(r=>r&&!r.skipped);
+  s.live=false;
+  if(!a.length)return toast('No answers submitted.'),go('dashboard');
+  const cats={},cn={};
+  a.forEach(r=>{const c=Q[r.q].c;cats[c]=(cats[c]||0)+r.ov;cn[c]=(cn[c]||0)+1});
+  Object.keys(cats).forEach(c=>cats[c]=Math.round(cats[c]/cn[c]));
+  const mets=MET.map((_,i)=>Math.round(a.reduce((x,r)=>x+r.sc[i],0)/a.length));
+  
+  // Complete backend session if active
+  if (backendOnline && S.token && S.practice_id) {
+    api.post(`/api/v1/practice/${S.practice_id}/complete`);
+  }
+
+  S.sessions.push({
+    u:S.user.email,
+    date:new Date().toLocaleDateString(),
+    mode:s.mode,
+    ov:Math.round(a.reduce((x,r)=>x+r.ov,0)/a.length),
+    cats,
+    mets,
+    role:S.jd.title||S.prof.role||'Target role',
+    co:S.jd.company||S.prof.company||'My practice',
+    fill:Math.round(a.reduce((x,r)=>x+(r.fill||0),0)/a.length),
+    wpm:Math.round(a.reduce((x,r)=>x+(r.wpm||0),0)/a.length),
+    items:s.res.filter(Boolean).map(r=>({q:Q[r.q].q,c:Q[r.q].c,ov:r.skipped?null:r.ov}))
+  });
+  S.view=S.sessions.length-1;
+  log('simulation_run',s.mode+': '+a.length+' answers scored',Date.now()-(s.t00||Date.now()));
+  save();
+  go('report');
+}
+
+P.feedback=()=>{const s=S.sess,l=s.last,q=Q[l.q],end=s.i>=s.list.length-1;
+return`<div class="row sp"><h2>Feedback</h2><div style="text-align:right"><div class=big>${l.ov}</div><span class="mute sm">out of 100</span></div></div><p class=mute>${esc(q.q)}</p>
+<div class="card mt">${MET.map((m,i)=>`<div style="margin-bottom:10px"><div class="row sp sm"><span>${m}</span><b>${l.sc[i]}</b></div>${bar(l.sc[i])}</div>`).join('')}</div>
+<div class=row style="margin-top:12px"><span class=chip>Filler words ${l.fill}%</span><span class=chip>Pace ${l.wpm} wpm</span><span class="chip ${S.prof.rigor=='hostile'?'ba':'ok'}">${{supportive:'Supportive coach',strict:'Strict panel',hostile:'Stress panel'}[S.prof.rigor]}</span></div><div class="grid g2 mt"><div class=card><h3>Your answer</h3><p class=mute style="white-space:pre-wrap">${esc(l.ans)}</p></div><div class=card><h3>Suggested answer</h3><p class=mute>${esc(sug(q))}</p></div></div>
+<div class="grid g3 mt"><div class=card><h3>Strong points</h3>${l.strong.map(x=>`<p class=sm>${esc(x)}</p>`).join('')||'<p class="sm mute">Keep building your answer.</p>'}</div><div class=card><h3>Missing points</h3>${l.miss.length?l.miss.map(x=>`<span class="chip ba">${esc(x)}</span>`).join(''):'<p class="sm mute">Nothing major.</p>'}</div><div class=card><h3>Improvement tip</h3><p class=sm>${l.tip}</p></div></div>
+<div class="row mt"><button onclick="S.sess.res.length=S.sess.i;go('practice')">Re-attempt</button><button class=pri onclick="nextQ()">${end?'Finish and see report':'Next question'}</button><button class=ghost onclick="endSess()">End session</button></div>`};
+
+P.report=()=>{const m=mine();if(!m.length)return`<h2>Reports</h2><p class=mute>No reports yet. Finish a practice session to see one here.</p><button class=pri onclick="go('practice')">Start practice</button>`;
+const s=S.sessions[S.view]&&S.sessions[S.view].u==S.user.email?S.sessions[S.view]:m[m.length-1],ix=m.indexOf(s),pv=ix>0?m[ix-1]:null,cs=Object.entries(s.cats).sort((a,b)=>b[1]-a[1]),wk=cs[cs.length-1],lm=s.mets.indexOf(Math.min(...s.mets));
+const lab=s.ov>=80?['Interview ready','ok']:s.ov>=60?['Almost there','wa']:['Needs practice','ba'];
+const rec=[`Practice more ${wk[0].toLowerCase()} questions (${wk[1]}/100 so far).`,`Work on ${MET[lm].toLowerCase()}: your lowest area at ${s.mets[lm]}/100.`,'Re-attempt your lowest-scoring question and compare the score.'];
+return`<div class="row sp"><div><h2>Session report</h2><p class=mute>${esc(s.date)} · ${esc(s.mode)}</p></div><div style="text-align:right"><div class=big>${s.ov}</div><span class="chip ${lab[1]}" style="margin:6px 0 0">${lab[0]}</span></div></div>
+${pv?`<p class=mute>${s.ov>=pv.ov?'Up':'Down'} ${Math.abs(s.ov-pv.ov)} points from your previous session (${pv.ov}).</p>`:''}
+<div class="grid g3 mt"><div class=card><div class=stat>~${Math.min(99,Math.round(s.ov*.95))}th</div><span class=mute>Estimated percentile (demo)</span></div><div class=card><div class=stat>${s.fill||0}%</div><span class=mute>Filler words</span></div><div class=card><div class=stat>${s.wpm||0}</div><span class=mute>Words per minute</span></div></div><div class="grid g2 mt"><div class=card><h3>Score by category</h3>${cs.map(([c,v])=>`<div style="margin-bottom:10px"><div class="row sp sm"><span>${c}</span><b>${v}</b></div>${bar(v)}</div>`).join('')}<p class="sm mute">Strongest: ${cs[0][0]} · Weakest: ${wk[0]}</p></div>
+<div class=card><h3>Strengths</h3><p class=sm>${cs[0][0]} scored ${cs[0][1]}/100.</p><h3 style="margin-top:10px">Critical areas</h3><p class=sm>${wk[0]} scored ${wk[1]}/100.</p><h3 style="margin-top:10px">Recommendations</h3>${rec.map(r=>`<p class=sm>• ${r}</p>`).join('')}</div></div>
+<div class="card mt tbl"><h3>Question results</h3>${s.items.map(i=>`<div class="row sp" style="padding:8px 0;border-top:1px solid var(--line)"><span style="flex:1;min-width:220px">${esc(i.q)} <span class="chip" style="margin-left:6px">${i.c}</span></span><b>${i.ov==null?'Skipped':i.ov}</b></div>`).join('')}</div>
+<div class="row mt noprint"><button class=pri onclick="S.mode='cat';S.cat='${wk[0]}';S.sess=null;go('practice')">Practice weakest area</button><button onclick="S.sess=null;go('practice')">Try different questions</button><button onclick="begin()">Practice again</button><button onclick="window.print()">Download report</button><button onclick="go('dashboard')">Back to dashboard</button></div>`};
+
+
+const T={hi:{Dashboard:'डैशबोर्ड','New preparation':'नई तैयारी',Questions:'प्रश्न',Practice:'अभ्यास',Reports:'रिपोर्ट',History:'इतिहास',Progress:'प्रगति','Cloud tasks':'क्लाउड कार्य',Settings:'सेटिंग्स'},te:{Dashboard:'డ్యాష్‌బోర్డ్','New preparation':'కొత్త సిద్ధత',Questions:'ప్రశ్నలు',Practice:'సాధన',Reports:'నివేదికలు',History:'చరిత్ర',Progress:'పురోగతి','Cloud tasks':'క్లౌడ్ పనులు',Settings:'సెట్టింగ్‌లు'},ta:{Dashboard:'டாஷ்போர்டு','New preparation':'புதிய தயாரிப்பு',Questions:'கேள்விகள்',Practice:'பயிற்சி',Reports:'அறிக்கைகள்',History:'வரலாறு',Progress:'முன்னேற்றம்','Cloud tasks':'கிளவுட் பணிகள்',Settings:'அமைப்புகள்'}};
+const L=s=>(T[S.prof.lang]||{})[s]||s;
+const log=(type,d,ms)=>{S.logs.unshift({t:new Date().toLocaleString(),type,d,ms});S.logs=S.logs.slice(0,60);save()};
+const guest=()=>{S.user={email:'guest@local',name:'Guest',guest:true};save();go('dashboard')};
+const dr=i=>{const k=S.dr.indexOf(i);k<0?S.dr.push(i):S.dr.splice(k,1);save();rr()};
+const setP=(k,v)=>{S.prof[k]=v;save();rr()},rep=i=>{S.view=i;go('report')};
+let rec;function mic(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast('Voice input is not supported in this browser.');
+if(rec){rec.stop();return}
+try{rec=new SR();rec.lang={hi:'hi-IN',te:'te-IN',ta:'ta-IN',kn:'kn-IN',ml:'ml-IN',bn:'bn-IN',mr:'mr-IN',gu:'gu-IN',pa:'pa-IN',or:'or-IN'}[S.prof.lang]||'en-IN';rec.continuous=true;
+rec.onresult=e=>{let t='';for(let i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript+' ';const a=$('#an');a.value+=(a.value&&!/\s$/.test(a.value)?' ':'')+t;wc()};
+rec.onerror=()=>toast('Microphone is blocked or unavailable.');rec.onend=()=>{rec=null;const m=$('#mic');if(m)m.textContent='Speak'};rec.start();$('#mic').textContent='Stop'}catch(e){rec=null;toast('Could not start the microphone.')}}
+const SEED=[['Stripe','Staff Infrastructure Engineer (L6)',90,'Completed'],['Databricks','Senior Distributed Systems Engineer',84,'Completed'],['Snowflake','Core Database Engine Architect',71,'In-Progress'],['Meta','Infrastructure Storage Engineer (E6)',68,'Archived']],HS=['All','Completed','In-Progress','Archived'];
+P.history=()=>{const m=mine(),q=(S.hq||'').toLowerCase(),fs=S.hs||'All';
+const rows=m.map(s=>({i:S.sessions.indexOf(s),co:s.co||'My practice',role:s.role||'Target role',ov:s.ov,st:s.arch?'Archived':'Completed',d:s.date})).concat(S.samp||!m.length?SEED.map(x=>({co:x[0],role:x[1],ov:x[2],st:x[3],d:'Sample',smp:1})):[]).filter(r=>(fs=='All'||r.st==fs)&&(r.co+r.role).toLowerCase().includes(q));
+return`<div class="row sp"><div><h2>Preparation history</h2><p class=mute>Every plan and mock interview in one place.</p></div><button class=pri onclick="go('upload')">New preparation</button></div>
+<div class="row mt"><input style="max-width:240px" placeholder="Search company or role" value="${esc(S.hq||'')}" onchange="S.hq=this.value;rr()">${HS.map(v=>`<button class="${fs==v?'pri':''}" onclick="S.hs='${v}';rr()">${v}</button>`).join('')}<label style="margin:0;display:flex;gap:6px;align-items:center"><input type=checkbox style="width:auto" ${S.samp?'checked':''} onchange="S.samp=this.checked;rr()">Show sample entries</label></div>
+<div class="card mt">${rows.map(r=>`<div class="row sp" style="padding:10px 0;border-top:1px solid var(--line)"><div style="flex:1;min-width:200px"><b>${esc(r.co)}</b> <span class="chip ${r.st=='Completed'?'ok':r.st=='Archived'?'':'wa'}">${r.st}</span>${r.smp?'<span class=chip>Sample</span>':''}<div class="mute sm">${esc(r.role)} · ${r.d}</div></div><b class=stat style="font-size:22px">${r.ov}</b>${r.smp?'':`<button onclick="rep(${r.i})">View report</button><button onclick="S.sessions[${r.i}].arch=!S.sessions[${r.i}].arch;save();rr()">${r.st=='Archived'?'Restore':'Archive'}</button>`}</div>`).join('')||'<p class=mute>Nothing matches.</p>'}</div>`};
+P.progress=()=>{const m=mine();if(!m.length)return`<h2>Progress and growth</h2><p class=mute>Finish a practice session and your trends will appear here.</p><button class=pri onclick="go('practice')">Start practice</button>`;
+const last=m[m.length-1],best=Math.max(...m.map(s=>s.ov)),days=new Set(m.map(s=>s.date)).size,cat={},cn={};m.forEach(s=>Object.entries(s.cats).forEach(([c,v])=>{cat[c]=(cat[c]||0)+v;cn[c]=(cn[c]||0)+1}));
+const mt=MET.map((_,i)=>Math.round(m.reduce((a,s)=>a+(s.mets?s.mets[i]:0),0)/m.length));const row=(n,v)=>`<div style="margin-bottom:10px"><div class="row sp sm"><span>${n}</span><b>${v}</b></div>${bar(v)}</div>`;
+return`<h2>Progress and growth</h2><p class=mute>How you are improving across sessions.</p><div class="grid g3 mt"><div class=card><div class=stat>${last.ov}</div><span class=mute>Latest score</span></div><div class=card><div class=stat>${best}</div><span class=mute>Best score</span></div><div class=card><div class=stat>${days}</div><span class=mute>Practice days</span></div></div>
+<div class="card mt"><h3>Last ${Math.min(10,m.length)} sessions</h3><div style="display:flex;gap:6px;align-items:flex-end;height:120px">${m.slice(-10).map(s=>`<div title="${s.ov}" style="flex:1;background:var(--ink);height:${s.ov}%;border-radius:3px 3px 0 0;transition:background .2s"></div>`).join('')}</div></div>
+<div class="grid g2 mt"><div class=card><h3>Average by category</h3>${Object.keys(cat).map(c=>row(c,Math.round(cat[c]/cn[c]))).join('')}</div><div class=card><h3>Average by skill</h3>${MET.map((x,i)=>row(x,mt[i])).join('')}</div></div>
+<div class="card mt"><h3>Company readiness bars <span class="chip">Sample benchmarks</span></h3>${[['Stripe',85],['Databricks',84],['Google',88]].map(b=>{const d=last.ov-b[1];return`<div class="row sp" style="padding:8px 0;border-top:1px solid var(--line)"><span>${b[0]} bar: ${b[1]}</span><span class="chip ${d>=0?'ok':d>=-3?'wa':'ba'}">${d>=0?'Exceeded (+'+d+')':d>=-3?'Near bar ('+d+')':'Below bar ('+d+')'}</span></div>`}).join('')}</div>`};
+const TY={parse_resume:'Parse resume',gap_calculation:'Gap calculation',simulation_run:'Simulation run',backup:'Backup and restore'};
+P.records=()=>`<div class="row sp"><div><h2>Task records and backup</h2><p class=mute>A log of what the app did for you. Everything is saved on this device.</p></div><button onclick="S.logs=[];save();rr()">Clear log</button></div>
+<div class="card mt tbl">${S.logs.map(l=>`<div class="row sp" style="padding:8px 0;border-top:1px solid var(--line)"><span style="flex:1;min-width:220px"><b>${TY[l.type]||l.type}</b><div class="mute sm">${esc(l.d)}</div></span><span class="mute sm">${l.t}</span><span class="chip ok">Completed</span><span class=chip>${(l.ms/1000).toFixed(1)}s</span><span class="chip wa">Saved locally</span></div>`).join('')||'<p class=mute>No tasks yet. Upload a resume or practice to see records.</p>'}</div>
+<div class="card mt"><h3>Backup and restore</h3><p class="mute sm">Create a backup, copy the text and keep it safe. Paste it back later to restore.</p><textarea id=bk style="min-height:140px"></textarea><div class="row mt"><button class=pri onclick="mkBk()">Create backup</button><button onclick="rsBk()">Restore from text</button></div></div>`;
+function mkBk(){$('#bk').value=JSON.stringify({v:1,at:new Date().toISOString(),prof:S.prof,sessions:mine(),logs:S.logs,bm:S.bm,dr:S.dr});log('backup','Created a backup',20);toast('Backup created. Copy the text.')}
+function rsBk(){try{const d=JSON.parse($('#bk').value);S.sessions=S.sessions.filter(x=>x.u!=S.user.email).concat((d.sessions||[]).map(x=>({...x,u:S.user.email})));S.prof=Object.assign(S.prof,d.prof||{});S.logs=d.logs||S.logs;S.bm=d.bm||[];S.dr=d.dr||[];log('backup','Restored from backup',30);toast('Backup restored');rr()}catch(e){toast('That backup text is not valid.')}}
+P.settings=()=>{const p=S.prof,f=(k,l,ph)=>`<label>${l}</label><input id=pf_${k} value="${esc(p[k]||'')}" placeholder="${ph||''}">`;
+return`<h2>Profile and settings</h2><p class=mute>Set your details and how strict the coach should be.</p><div class="grid g2 mt"><div class=card><h3>Candidate profile</h3><label>Full name</label><input id=pf_name value="${esc(S.user.name)}">${f('role','Target role','Python Developer')}${f('company','Target company')}${f('inst','Institution')}${f('deg','Degree')}${f('yr','Graduation year')}${f('gpa','GPA or percentage')}${f('loc','Location','Hyderabad')}<div class="row mt"><button class=pri onclick="saveSet()">Save profile</button></div></div>
+<div class=card><h3>Interviewer style</h3><div class=grid>${[['supportive','Supportive coach','Scores more generously'],['strict','Strict hiring panel','Standard scoring'],['hostile','Stress panel','Scores harder']].map(x=>`<div class="sel ${p.rigor==x[0]?'on':''}" onclick="setP('rigor','${x[0]}')"><b>${x[1]}</b><div class="mute sm">${x[2]}</div></div>`).join('')}</div>
+<label>Filler-word sensitivity</label><select onchange="setP('fill',this.value)">${['low','medium','high'].map(v=>`<option ${p.fill==v?'selected':''}>${v}</option>`).join('')}</select><label>Target speaking pace (words per minute)</label><input type=number min=80 max=200 value="${p.pace}" onchange="setP('pace',+this.value)"></div></div>
+<div class="card mt"><h3>Language</h3><p class="mute sm">Menu translated for Hindi, Telugu and Tamil. Voice input uses your chosen language. Other languages are saved as a preference.</p><div class=row>${LANGS.map(x=>`<button class="${p.lang==x[0]?'pri':''}" onclick="setP('lang','${x[0]}')">${x[1]}</button>`).join('')}</div></div>
+<div class="card mt"><h3>Your data</h3><p class="mute sm">Remove your sessions and task log from this device.</p><button onclick="if(confirm('Delete all your sessions and logs?')){S.sessions=S.sessions.filter(x=>x.u!=S.user.email);S.logs=[];save();toast('Data cleared');rr()}">Clear my practice data</button></div>`};
+function saveSet(){['role','company','inst','deg','yr','gpa','loc'].forEach(k=>S.prof[k]=$('#pf_'+k).value.trim());const n=$('#pf_name').value.trim()||S.user.name;S.user.name=n;if(S.users[S.user.email])S.users[S.user.email].name=n;if(!S.jd.title)S.jd.title=S.prof.role;if(!S.jd.company)S.jd.company=S.prof.company;save();toast('Profile saved')}
+const LANGS=[['en','Indian English'],['hi','हिन्दी'],['te','తెలుగు'],['ta','தமிழ்'],['kn','ಕನ್ನಡ'],['ml','മലയാളം'],['bn','বাংলা'],['mr','मराठी'],['gu','ગુજરાતી'],['pa','ਪੰਜਾਬੀ'],['or','ଓଡ଼ିଆ']];
+function render(){let r=location.hash.slice(2)||'landing';clearInterval(S.timer);try{rec&&rec.stop()}catch(e){}const sc=r=='feat'||r=='about'?r:null;if(sc)r='landing';
+const prot=['dashboard','upload','review','gap','questions','practice','feedback','report','history','progress','records','settings'];
+if(prot.includes(r)&&!S.user)r='login';else if(S.user&&['login','register'].includes(r))r='dashboard';
+if((r=='review'||r=='gap')&&!S.ready){toast('Upload a resume and job description first.');r='upload'}
+if(r=='feedback'&&!(S.sess&&S.sess.last))r='dashboard';
+if(!P[r])r='landing';
+document.getElementById('app').insertAdjacentHTML('beforebegin','');const old=document.querySelector('header');old&&old.remove();
+document.body.insertAdjacentHTML('afterbegin',nav(sc||r));const ch=S.lr!=r;S.lr=r;$('#app').className=ch?'enter':'';$('#app').innerHTML=P[r]();if(sc)document.getElementById(sc).scrollIntoView();else scrollTo(0,0)}
+addEventListener('hashchange',render);render();
+</script></body></html>
