@@ -15,8 +15,8 @@ SUPPORTED_PROVIDERS = {
         "id": "gemini",
         "name": "Google Gemini",
         "company": "Google",
-        "default_model": "gemini-1.5-flash",
-        "models": ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"],
+        "default_model": "gemini-3.8-flash",
+        "models": ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-2.5-pro"],
         "description": "High-speed reasoning with large context window and multimodal intelligence.",
     },
     "openai": {
