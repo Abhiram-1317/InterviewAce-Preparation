@@ -16,8 +16,8 @@ export default function SettingsView() {
 
   const [formData, setFormData] = useState({
     name: user?.full_name || user?.name || '',
-    targetRole: settings.targetRole || 'Senior Full Stack Engineer',
-    targetCompany: settings.targetCompany || 'TechCorp Global',
+    targetRole: settings.targetRole || '',
+    targetCompany: settings.targetCompany || '',
     institution: settings.institution || '',
     degree: settings.degree || '',
     graduationYear: settings.graduationYear || '',

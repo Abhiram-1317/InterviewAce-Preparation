@@ -11,7 +11,9 @@ export default function DashboardView() {
   // Active unarchived sessions
   const activeSessions = sessionsHistory.filter((s) => !s.isArchived);
   const totalSessions = activeSessions.length;
-  const questionsPracticed = totalSessions * 5 + 4; // realistic tally
+  const questionsPracticed = totalSessions > 0
+    ? activeSessions.reduce((acc, curr) => acc + (curr.questionsCount || 5), 0)
+    : 0;
 
   const avgScore = totalSessions > 0
     ? Math.round(activeSessions.reduce((acc, curr) => acc + curr.score, 0) / totalSessions)

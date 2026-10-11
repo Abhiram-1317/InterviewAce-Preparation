@@ -8,7 +8,7 @@ export default function HistoryView() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-  const [showSampleEntries, setShowSampleEntries] = useState(true);
+  const [showSampleEntries, setShowSampleEntries] = useState(false);
 
   const filteredSessions = useMemo(() => {
     return sessionsHistory.filter((s) => {

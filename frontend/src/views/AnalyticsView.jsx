@@ -24,10 +24,10 @@ import {
 
 export default function AnalyticsView() {
   const [stats, setStats] = useState({
-    total_sessions: 3,
-    total_questions_practiced: 14,
-    average_overall_score: 84.5,
-    readiness_trend: 'Improving',
+    total_sessions: 0,
+    total_questions_practiced: 0,
+    average_overall_score: 0.0,
+    readiness_trend: 'Stable',
   });
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -66,6 +66,18 @@ async def get_session_by_id(session_id: str, user_id: str | None = None) -> dict
     return session
 
 
+async def get_user_sessions(user_id: str) -> list[dict]:
+    """Fetches all interview sessions belonging to a specific user, sorted newest first."""
+    db = get_database()
+    if db is None:
+        return []
+    cursor = db["interview_sessions"].find({"user_id": user_id}).sort("created_at", -1)
+    sessions = await cursor.to_list(length=100)
+    for s in sessions:
+        s["id"] = str(s["_id"])
+    return sessions
+
+
 async def add_questions_to_session(session_id: str, questions: list[dict]) -> bool:
     """Updates the interview_sessions document with generated questions and advances status."""
     db = get_database()

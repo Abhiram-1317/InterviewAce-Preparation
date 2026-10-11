@@ -7,6 +7,7 @@ from app.services.session_service import (
     add_questions_to_session,
     create_interview_session,
     get_session_by_id,
+    get_user_sessions,
     save_answer_suggestion,
 )
 from app.utils.dependencies import get_current_user, get_optional_current_user
@@ -21,6 +22,14 @@ session_router = APIRouter(
     tags=["Session"],
     dependencies=[Depends(get_optional_current_user)],
 )
+
+
+@session_router.get("/user/all")
+async def get_all_user_sessions(current_user: dict = Depends(get_current_user)):
+    """Retrieve all saved interview preparation sessions for the current user."""
+    user_id = str(current_user["id"])
+    sessions = await get_user_sessions(user_id)
+    return {"sessions": sessions}
 
 
 @session_router.post("/create", status_code=status.HTTP_201_CREATED)

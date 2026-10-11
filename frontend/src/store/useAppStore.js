@@ -290,13 +290,13 @@ export const useAppStore = create((set, get) => ({
   },
 
   // Multi-Provider AI Engine State
-  activeAIProvider: localStorage.getItem('interviewace_ai_provider') || 'custom',
+  activeAIProvider: localStorage.getItem('interviewace_ai_provider') || 'gemini',
   aiProviders: [
-    { id: 'custom', name: 'OmniRoute / Custom Endpoint', default_model: 'auto/best-coding', is_configured: true, is_active: true },
-    { id: 'gemini', name: 'Google Gemini', default_model: 'gemini-1.5-flash', is_configured: false, is_active: false },
+    { id: 'gemini', name: 'Google Gemini', default_model: 'gemini-3.8-flash', is_configured: true, is_active: true },
     { id: 'openai', name: 'OpenAI GPT-4o', default_model: 'gpt-4o-mini', is_configured: false, is_active: false },
     { id: 'claude', name: 'Anthropic Claude', default_model: 'claude-3-5-sonnet-20241022', is_configured: false, is_active: false },
     { id: 'groq', name: 'Groq Cloud (Llama 3.3)', default_model: 'llama-3.3-70b-versatile', is_configured: false, is_active: false },
+    { id: 'custom', name: 'OmniRoute / Custom Endpoint', default_model: 'auto/best-coding', is_configured: false, is_active: false },
   ],
 
   setAIProvider: (provider) => {
@@ -401,89 +401,58 @@ export const useAppStore = create((set, get) => ({
     });
   },
 
-  // Past Sessions History (Spec 7.11)
-  sessionsHistory: [
-    {
-      id: 'sess_1',
-      company: 'TechCorp Global',
-      role: 'Senior Full Stack Engineer',
-      date: '10 Oct 2026',
-      score: 85,
-      status: 'Completed',
-      mode: 'Quick practice',
-      percentile: 88,
-      fillerPercent: 3.2,
-      wpm: 128,
-      isSample: false,
-      isArchived: false,
-    },
-    {
-      id: 'sess_sample_1',
-      company: 'Stripe',
-      role: 'Backend Systems Engineer',
-      date: '02 Oct 2026',
-      score: 88,
-      status: 'Completed',
-      mode: 'Full mock interview',
-      percentile: 91,
-      fillerPercent: 2.8,
-      wpm: 135,
-      isSample: true,
-      isArchived: false,
-    },
-    {
-      id: 'sess_sample_2',
-      company: 'Databricks',
-      role: 'Platform Infrastructure Engineer',
-      date: '28 Sep 2026',
-      score: 79,
-      status: 'Completed',
-      mode: 'Category focus (Technical)',
-      percentile: 82,
-      fillerPercent: 4.1,
-      wpm: 122,
-      isSample: true,
-      isArchived: false,
-    },
-    {
-      id: 'sess_sample_3',
-      company: 'Snowflake',
-      role: 'Distributed Database Engineer',
-      date: '21 Sep 2026',
-      score: 84,
-      status: 'Completed',
-      mode: 'Weak areas drill',
-      percentile: 87,
-      fillerPercent: 3.5,
-      wpm: 130,
-      isSample: true,
-      isArchived: false,
-    },
-    {
-      id: 'sess_sample_4',
-      company: 'Meta',
-      role: 'Production Engineer',
-      date: '15 Sep 2026',
-      score: 74,
-      status: 'Archived',
-      mode: 'Quick practice',
-      percentile: 76,
-      fillerPercent: 5.0,
-      wpm: 118,
-      isSample: true,
-      isArchived: true,
-    },
-  ],
+  // Past Sessions History (User Real History)
+  sessionsHistory: (() => {
+    try {
+      const stored = localStorage.getItem('interviewace_sessions_history');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  })(),
+
+  setSessionsHistory: (sessions) => {
+    const list = Array.isArray(sessions) ? sessions : [];
+    try {
+      localStorage.setItem('interviewace_sessions_history', JSON.stringify(list));
+    } catch (e) {
+      console.error(e);
+    }
+    set({ sessionsHistory: list });
+  },
+
+  addSessionToHistory: (session) => {
+    set((state) => {
+      const updated = [session, ...state.sessionsHistory];
+      try {
+        localStorage.setItem('interviewace_sessions_history', JSON.stringify(updated));
+      } catch (e) {
+        console.error(e);
+      }
+      return { sessionsHistory: updated };
+    });
+  },
 
   toggleArchiveSession: (id) => {
-    set((state) => ({
-      sessionsHistory: state.sessionsHistory.map((s) =>
+    set((state) => {
+      const updated = state.sessionsHistory.map((s) =>
         s.id === id ? { ...s, isArchived: !s.isArchived } : s
-      ),
-    }));
+      );
+      try {
+        localStorage.setItem('interviewace_sessions_history', JSON.stringify(updated));
+      } catch (e) {
+        console.error(e);
+      }
+      return { sessionsHistory: updated };
+    });
   },
 
   deletePracticeData: () => {
+    try {
+      localStorage.removeItem('interviewace_sessions_history');
+    } catch (e) {
+      console.error(e);
+    }
     set({
       sessionsHistory: [],
       drillIds: [],
@@ -493,13 +462,13 @@ export const useAppStore = create((set, get) => ({
 
   // Settings & Language
   settings: {
-    targetRole: 'Senior Full Stack Engineer',
-    targetCompany: 'TechCorp Global',
-    institution: 'University of Washington',
-    degree: 'B.S. in Computer Science',
-    graduationYear: '2019',
-    gpa: '3.85',
-    location: 'San Francisco, CA',
+    targetRole: '',
+    targetCompany: '',
+    institution: '',
+    degree: '',
+    graduationYear: '',
+    gpa: '',
+    location: '',
     interviewerStyle: 'Supportive coach', // Supportive coach, Strict hiring panel, Stress panel
     fillerSensitivity: 'Standard',
     targetSpeakingPace: 130, // words per minute
